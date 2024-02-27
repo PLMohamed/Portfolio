@@ -24,15 +24,16 @@ export default function About() {
                     </span>
                 </h1>
                 <p>
-                    also known as <strong>PLMohamed</strong>, I'm a full-stack
-                    web developer, I have a passion for web development and love
-                    to create web applications using modern technologies.
+                    also known as <strong>PLMohamed</strong>, I&apos;m a
+                    full-stack web developer, I have a passion for web
+                    development and love to create web applications using modern
+                    technologies.
                 </p>
                 <p>
-                    I have a strong foundation in web development and I'm on a
-                    journey to evolve into a DevOps , I'm a fast learner and I'm
-                    always looking to learn new technologies and improve my
-                    skills.
+                    I have a strong foundation in web development and I&apos;m
+                    on a journey to evolve into a DevOps , I &apos;m a fast
+                    learner and I&apos;m always looking to learn new
+                    technologies and improve my skills.
                 </p>
             </section>
             <section className="space-y-4">
