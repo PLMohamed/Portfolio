@@ -1,5 +1,9 @@
 import NavBar from "@/components/NavBar";
+import { config } from "@fortawesome/fontawesome-svg-core";
 import "@/styles/globals.css";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+
+config.autoAddCss = false;
 
 export const metadata = {
     title: "Boumedine Mohamed Touati",
@@ -25,13 +29,20 @@ export const metadata = {
     ],
 };
 
-export default function RootLayout({ children, about, works, contact }) {
+export default function RootLayout({
+    children,
+    about,
+    services,
+    works,
+    contact,
+}) {
     return (
         <html lang="en" className="scroll-smooth">
             <body className="space-y-28 scroll-smooth bg-slate-100 text-zinc-900 dark:bg-zinc-800 dark:text-white">
                 <NavBar />
                 <main className="flex flex-col  px-5 md:px-16">
                     {about}
+                    {services}
                     {/* {works} */}
                     {/* {contact} */}
                     {/* {children} */}

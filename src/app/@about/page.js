@@ -1,6 +1,7 @@
 import Image from "next/image";
-import Main from "./components/main";
+import Main from "../../components/main";
 import { Poppins } from "next/font/google";
+import StackWrapper from "./components/StackWrapper";
 
 const poppins = Poppins({
     weight: ["400", "500", "600", "700"],
@@ -11,7 +12,10 @@ const poppins = Poppins({
 
 export default function About() {
     return (
-        <Main classNameNotInView="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-44">
+        <Main
+            classNameNotInView="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-44"
+            id="about"
+        >
             <section className="space-y-6">
                 <h1
                     className={` text-4xl font-bold uppercase tracking-wider 
@@ -38,11 +42,8 @@ export default function About() {
             </section>
             <section className="space-y-4">
                 <h2 className="text-lg font-medium">Stacks</h2>
-                <div className="relative max-w-full overflow-hidden">
-                    <div
-                        className="flex gap-5 transition-all ease-in-out 
-                        [&>img]:box-border [&>img]:h-12 [&>img]:w-12 [&>img]:rounded-md [&>img]:bg-neutral-200 [&>img]:p-1 [&>img]:dark:bg-zinc-700 "
-                    >
+                <div className="relative max-w-full space-y-4 ">
+                    <StackWrapper direction="left">
                         <Image
                             src="js.svg"
                             width={48}
@@ -98,7 +99,59 @@ export default function About() {
                             height={48}
                             alt="python"
                         />
-                    </div>
+                        <Image src="php.svg" width={48} height={48} alt="php" />
+                    </StackWrapper>
+                    <StackWrapper direction="right" reset={19}>
+                        <Image
+                            src="vitejs.svg"
+                            width={48}
+                            height={48}
+                            alt="vite js"
+                        />
+                        <Image
+                            src="/drizzleorm.png"
+                            width={48}
+                            height={48}
+                            alt="drizzle orm"
+                        />
+                        <Image src="git.svg" width={48} height={48} alt="git" />
+                        <Image
+                            src="/shadcn.png"
+                            width={48}
+                            height={48}
+                            alt="shadcn"
+                        />
+                        <Image
+                            src="vscode.svg"
+                            width={48}
+                            height={48}
+                            alt="visual studio code"
+                        />
+                        <Image
+                            src="/markdown.png"
+                            width={48}
+                            height={48}
+                            alt="markdown"
+                        />
+                        <Image
+                            src="docker.svg"
+                            width={48}
+                            height={48}
+                            alt="docker"
+                        />
+                        <Image
+                            src="insomnia.svg"
+                            width={48}
+                            height={48}
+                            alt="insomnia"
+                        />
+                        <Image
+                            src="github.svg"
+                            width={48}
+                            height={48}
+                            alt="github"
+                        />
+                    </StackWrapper>
                 </div>
             </section>
         </Main>

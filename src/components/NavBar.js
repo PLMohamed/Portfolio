@@ -63,6 +63,7 @@ export default function NavBar() {
                     ${menuToggled ? " left-0 " : " -left-full"}  `}
                 >
                     <Link href="#about">About</Link>
+                    <Link href="#services">Services</Link>
                     <Link href="#projects">Projects</Link>
                     <Link href="#contact">Contact</Link>
                 </div>

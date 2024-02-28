@@ -3,6 +3,7 @@
 export default function Main({
     children,
     ref,
+    id,
     classNameInView,
     classNameNotInView,
     inView,
@@ -11,7 +12,7 @@ export default function Main({
         <article
             ref={ref}
             className={inView ? classNameInView : classNameNotInView}
-            id="about"
+            id={id}
         >
             {children}
         </article>
