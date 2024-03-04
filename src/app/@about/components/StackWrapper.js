@@ -1,55 +1,15 @@
-"use client";
-import { useEffect, useRef } from "react";
+import React from "react";
+import Marquee from "react-fast-marquee";
 
-export default function StackWrapper({
-    children,
-    direction = "left",
-    reset = 108,
-}) {
-    const containerRef = useRef(null);
-
-    useEffect(() => {
-        containerRef.current.innerHTML += containerRef.current.innerHTML;
-
-        const maxScroll =
-            containerRef.current.scrollWidth -
-            containerRef.current.clientWidth -
-            reset;
-        const scroll = () => {
-            if (direction === "left") {
-                containerRef.current.scrollLeft += 1;
-                if (containerRef.current.scrollLeft >= maxScroll) {
-                    containerRef.current.scrollLeft -=
-                        containerRef.current.scrollLeft;
-                }
-            } else if (direction === "right") {
-                containerRef.current.scrollLeft -= 1;
-                if (containerRef.current.scrollLeft <= 108) {
-                    containerRef.current.scrollLeft +=
-                        containerRef.current.scrollWidth;
-                }
-            }
-        };
-        let interval = setInterval(scroll, 24);
-        containerRef.current.addEventListener("mouseenter", () => {
-            clearInterval(interval);
-        });
-        containerRef.current.addEventListener("mouseleave", () => {
-            interval = setInterval(scroll, 24);
-        });
-
-        return () => {
-            clearInterval(interval);
-        };
-    }, [direction]);
-
+export default function StackWrapper({ children, direction = "left" }) {
     return (
-        <div
-            className="relative flex gap-5 overflow-hidden 
-                        transition-all ease-in-out [&>img]:box-border [&>img]:flex [&>img]:h-12 [&>img]:w-12 [&>img]:items-center [&>img]:justify-center [&>img]:rounded-md [&>img]:bg-neutral-200 [&>img]:p-1 [&>img]:dark:bg-zinc-700"
-            ref={containerRef}
-        >
-            {children}
-        </div>
+        <Marquee direction={direction} autoFill={true} pauseOnHover={true}>
+            {React.Children.map(children, (child, index) =>
+                React.cloneElement(child, {
+                    className:
+                        "box-border flex h-12 w-12 items-center justify-center rounded-md bg-neutral-200 p-1 mx-2 dark:bg-zinc-700",
+                }),
+            )}
+        </Marquee>
     );
 }

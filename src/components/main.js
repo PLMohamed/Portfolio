@@ -1,17 +1,21 @@
 "use client";
 
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+
 export default function Main({
     children,
-    ref,
     id,
     classNameInView,
     classNameNotInView,
-    inView,
 }) {
+    const ref = useRef();
+    const isInView = useInView(ref, { once: true });
+
     return (
         <article
             ref={ref}
-            className={inView ? classNameInView : classNameNotInView}
+            className={isInView ? classNameInView : classNameNotInView}
             id={id}
         >
             {children}

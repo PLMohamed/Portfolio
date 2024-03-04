@@ -10,9 +10,10 @@ export default function Services() {
     return (
         <Main
             id="services"
-            classNameNotInView="*:w-full *:lg:w-1/3 *:flex-wrap mt-12 flex max-w-full flex-col items-stretch  justify-center gap-4 md:flex-row"
+            classNameInView="*:w-full *:lg:w-1/3 *:flex-wrap mt-12 flex max-w-full flex-col items-stretch  justify-center gap-4 md:flex-row translate-x-0 translate-y-0 opacity-100 transition-all duration-500"
+            classNameNotInView="*:w-full *:lg:w-1/3 *:flex-wrap mt-12 flex max-w-full flex-col items-stretch  justify-center gap-4 md:flex-row opacity-0 translate-x-10 md:translate-x-0 md:translate-y-10 transition-all duration-500"
         >
-            <section className="flex cursor-pointer flex-col space-y-4 rounded-xl bg-gray-100  px-4 py-6 text-center shadow-2xl transition-all duration-300 hover:animate-pulse md:hover:-translate-y-4 dark:bg-zinc-700 dark:shadow-zinc-900">
+            <section className="flex cursor-pointer flex-col space-y-4 rounded-xl bg-gradient-to-br from-gray-100 via-gray-200 to-gray-100  px-4 py-6 text-center shadow-2xl transition-all duration-300  md:hover:-translate-y-4 dark:from-zinc-700 dark:via-zinc-800 dark:to-zinc-700 dark:shadow-zinc-900 ">
                 <FontAwesomeIcon icon={faFlaskVial} size="3x" />
                 <h2 className="text-3xl font-bold text-neutral-900 dark:text-zinc-100">
                     Software Testing
@@ -22,7 +23,7 @@ export default function Services() {
                     and errors by perform manual and detailed testing.
                 </p>
             </section>
-            <section className="flex cursor-pointer flex-col space-y-4 rounded-xl bg-gray-100  px-4 py-6 text-center shadow-2xl transition-all duration-300 hover:animate-pulse md:hover:-translate-y-4 dark:bg-zinc-700 dark:shadow-zinc-900">
+            <section className="flex cursor-pointer flex-col space-y-4 rounded-xl bg-gradient-to-br from-gray-100 via-gray-200 to-gray-100  px-4 py-6 text-center shadow-2xl transition-all duration-300  md:hover:-translate-y-4 dark:from-zinc-700 dark:via-zinc-800 dark:to-zinc-700 dark:shadow-zinc-900 ">
                 <FontAwesomeIcon icon={faEarth} size="3x" />
                 <h2 className="text-3xl font-bold text-neutral-900 dark:text-zinc-100">
                     Web Development
@@ -33,7 +34,7 @@ export default function Services() {
                     development.
                 </p>
             </section>
-            <section className="flex cursor-pointer flex-col space-y-4 rounded-xl bg-gray-100  px-4 py-6 text-center shadow-2xl transition-all duration-300 hover:animate-pulse md:hover:-translate-y-4 dark:bg-zinc-700 dark:shadow-zinc-900">
+            <section className="flex cursor-pointer flex-col space-y-4 rounded-xl bg-gradient-to-br from-gray-100 via-gray-200 to-gray-100  px-4 py-6 text-center shadow-2xl transition-all duration-300  md:hover:-translate-y-4 dark:from-zinc-700 dark:via-zinc-800 dark:to-zinc-700 dark:shadow-zinc-900 ">
                 <FontAwesomeIcon icon={faComputer} size="3x" />
                 <h2 className="text-3xl font-bold text-neutral-900 dark:text-zinc-100">
                     Desktop Applications

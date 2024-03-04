@@ -13,12 +13,15 @@ const poppins = Poppins({
 export default function About() {
     return (
         <Main
-            classNameNotInView="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-44"
+            classNameInView="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-44 opacity-100 translate-y-0 transition-all duration-400 mb-4"
+            classNameNotInView="opacity-0 translate-y-10 grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-44 transition-all duration-400 mb-4"
             id="about"
         >
             <section className="space-y-6">
                 <h1
                     className={` text-4xl font-bold uppercase tracking-wider 
+                    
+
                     ${poppins.className}
                 `}
                 >
@@ -41,8 +44,8 @@ export default function About() {
                 </p>
             </section>
             <section className="space-y-4">
-                <h2 className="text-lg font-medium">Stacks</h2>
-                <div className="relative max-w-full space-y-4 ">
+                <h2 className="text-lg font-medium">Tools and Techs</h2>
+                <div className="relative max-w-full space-y-4">
                     <StackWrapper direction="left">
                         <Image
                             src="js.svg"
