@@ -2,6 +2,9 @@ import NavBar from "@/components/NavBar";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@/styles/globals.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import { Suspense } from "react";
+import AboutLoading from "./@about/loading";
+import ServiceLoading from "./@services/loading";
 
 config.autoAddCss = false;
 
@@ -41,8 +44,10 @@ export default function RootLayout({
             <body className="space-y-28 scroll-smooth bg-slate-100 text-zinc-900 dark:bg-zinc-800 dark:text-white">
                 <NavBar />
                 <main className="flex flex-col  px-5 md:px-16">
-                    {about}
-                    {services}
+                    <Suspense fallback={<AboutLoading />}>{about}</Suspense>
+                    <Suspense fallback={<ServiceLoading />}>
+                        {services}
+                    </Suspense>
                     {/* {works} */}
                     {/* {contact} */}
                     {/* {children} */}

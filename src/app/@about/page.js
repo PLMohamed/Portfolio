@@ -10,7 +10,8 @@ const poppins = Poppins({
     subsets: ["latin"],
 });
 
-export default function About() {
+export default async function About() {
+    await new Promise((resolve) => setTimeout(resolve, 10000));
     return (
         <Main
             classNameInView="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-44 opacity-100 translate-y-0 transition-all duration-400 mb-4"
