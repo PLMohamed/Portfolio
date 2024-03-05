@@ -14,9 +14,16 @@ export default function Projects() {
         {
             title: "HealthCompass Desktop Application",
             alt: "HealthCompass Desktop Application",
+            image: "/healthCompass.png",
             link: "https://github.com/PLMohamed/HealthCompass",
             description:
                 "A simple desktop application that helps doctors track and manage their patients",
+        },
+        {
+            title: "Todo List Web Application",
+            link: "https://github.com/PLMohamed/next-todolist",
+            description:
+                "A simple web application that helps user track their daily tasks and manage them, with features like adding and deleting  tasks, and also the ability to mark tasks as done.",
         },
         {
             title: "CV Maker",
@@ -26,6 +33,7 @@ export default function Projects() {
             description:
                 "A modern look website that helps users create their CVs online and export them as PDFs",
         },
+
         {
             title: "Weather App",
             image: "/weatherApp.png",
@@ -50,10 +58,15 @@ export default function Projects() {
         },
     ];
 
-    const projectsParPart = Math.ceil(projects.length / 3);
-    const projectsParts = Array.from({ length: 3 }, (_, index) =>
-        projects.slice(index * projectsParPart, (index + 1) * projectsParPart),
-    );
+    const projectsParPart = Math.floor(projects.length / 3);
+    const remainder = projects.length % 3;
+
+    const projectsParts = Array.from({ length: 3 }, (_, index) => {
+        const start = index * projectsParPart + Math.min(index, remainder);
+        const end =
+            (index + 1) * projectsParPart + Math.min(index + 1, remainder);
+        return projects.slice(start, end);
+    });
 
     return (
         <Main

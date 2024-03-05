@@ -4,9 +4,13 @@ import Link from "next/link";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 export default function Card({ title, description, image, alt, link }) {
+    const disabled = link === "/";
     return (
         <div className=" w-full rounded-lg border border-gray-200 bg-white shadow dark:border-zinc-700 dark:bg-zinc-800">
-            <Link href={link} className="flex h-full flex-col justify-between">
+            <Link
+                href={link}
+                className={`flex h-full flex-col justify-between ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+            >
                 <div>
                     {image && (
                         <Image
@@ -30,10 +34,14 @@ export default function Card({ title, description, image, alt, link }) {
                 </div>
                 <span
                     href={link}
-                    className=" m-5 flex w-fit content-center items-center gap-2 rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    className={` m-5 flex w-fit content-center items-center gap-2 rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white  focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600  dark:focus:ring-blue-800
+                    ${disabled ? "cursor-not-allowed opacity-80" : "cursor-pointer hover:bg-blue-800 dark:hover:bg-blue-700"}
+                    `}
                 >
-                    <span>Source Code & Preview</span>
-                    <FontAwesomeIcon icon={faArrowRight} />
+                    <span>
+                        {disabled ? "Not Available" : "Source Code & Preview"}
+                    </span>
+                    {disabled ? null : <FontAwesomeIcon icon={faArrowRight} />}
                 </span>
             </Link>
         </div>
