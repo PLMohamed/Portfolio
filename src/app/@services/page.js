@@ -6,13 +6,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "./components/Card";
 
-export default async function Services() {
-    await new Promise((resolve) => setTimeout(resolve, 10000));
+export default function Services() {
     return (
         <Main
             id="services"
-            classNameInView="*:w-full *:lg:w-1/3 *:flex-wrap mt-12 flex max-w-full flex-col items-stretch  justify-center gap-4 md:flex-row translate-x-0 translate-y-0 opacity-100 transition-all duration-500"
-            classNameNotInView="*:w-full *:lg:w-1/3 *:flex-wrap mt-12 flex max-w-full flex-col items-stretch  justify-center gap-4 md:flex-row opacity-0 translate-x-10 md:translate-x-0 md:translate-y-10 transition-all duration-500"
+            classNameInView="*:w-full *:lg:w-1/3 *:flex-wrap my-12 flex max-w-full flex-col items-stretch  justify-center gap-4 md:flex-row translate-x-0 translate-y-0 opacity-100 transition-all duration-500"
+            classNameNotInView="*:w-full *:lg:w-1/3 *:flex-wrap my-12 flex max-w-full flex-col items-stretch  justify-center gap-4 md:flex-row opacity-0 translate-x-10 md:translate-x-0 md:translate-y-10 transition-all duration-500"
         >
             <Card
                 icon={faFlaskVial}

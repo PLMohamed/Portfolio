@@ -1,50 +1,41 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 export default function Card({ title, description, image, alt, link }) {
     return (
-        <div className="max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
-            <Link href="#">
-                <Image
-                    className="rounded-t-lg"
-                    src={image}
-                    alt={alt}
-                    width={0}
-                    height={0}
-                    style={{ width: "100%", height: "auto" }} // optional
-                />
-            </Link>
-            <div className="p-5">
-                <Link href="#">
-                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        {title}
-                    </h5>
-                </Link>
-                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                    {description}
-                </p>
-                <Link
-                    href={link}
-                    className="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                    Source Code & Preview
-                    <svg
-                        className="ms-2 h-3.5 w-3.5 rtl:rotate-180"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 14 10"
-                    >
-                        <path
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M1 5h12m0 0L9 1m4 4L9 9"
+        <div className=" w-full rounded-lg border border-gray-200 bg-white shadow dark:border-zinc-700 dark:bg-zinc-800">
+            <Link href={link} className="flex h-full flex-col justify-between">
+                <div>
+                    {image && (
+                        <Image
+                            className="rounded-t-lg"
+                            src={image}
+                            alt={alt}
+                            width={600}
+                            height={400}
+                            style={{ width: "100%", height: "auto" }}
+                            loading="lazy"
                         />
-                    </svg>
-                </Link>
-            </div>
+                    )}
+                    <div className="p-5">
+                        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                            {title}
+                        </h5>
+                        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            {description}
+                        </p>
+                    </div>
+                </div>
+                <span
+                    href={link}
+                    className=" m-5 flex w-fit content-center items-center gap-2 rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                    <span>Source Code & Preview</span>
+                    <FontAwesomeIcon icon={faArrowRight} />
+                </span>
+            </Link>
         </div>
     );
 }

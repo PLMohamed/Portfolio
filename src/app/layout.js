@@ -48,7 +48,7 @@ export default function RootLayout({
                     <Suspense fallback={<ServiceLoading />}>
                         {services}
                     </Suspense>
-                    {/* {works} */}
+                    {works}
                     {/* {contact} */}
                     {/* {children} */}
                 </main>

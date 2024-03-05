@@ -10,12 +10,11 @@ const poppins = Poppins({
     subsets: ["latin"],
 });
 
-export default async function About() {
-    await new Promise((resolve) => setTimeout(resolve, 10000));
+export default function About() {
     return (
         <Main
-            classNameInView="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-44 opacity-100 translate-y-0 transition-all duration-400 mb-4"
-            classNameNotInView="opacity-0 translate-y-10 grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-44 transition-all duration-400 mb-4"
+            classNameInView="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-44 opacity-100 translate-y-0 transition-all duration-400 mb-6"
+            classNameNotInView="opacity-0 translate-y-10 grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-44 transition-all duration-400 mb-6"
             id="about"
         >
             <section className="space-y-6">
@@ -118,6 +117,7 @@ export default async function About() {
                             height={48}
                             alt="drizzle orm"
                         />
+
                         <Image src="git.svg" width={48} height={48} alt="git" />
                         <Image
                             src="/shadcn.png"

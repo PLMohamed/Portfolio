@@ -28,9 +28,9 @@ export default function NavBar() {
 
     return (
         <nav
-            className={`fixed inset-x-0 top-0 z-50 flex w-screen items-center justify-between border-b border-zinc-800 px-5 py-6 text-slate-900 no-underline backdrop-blur
+            className={`fixed  inset-x-0 top-0 z-50 flex w-screen items-center justify-between border-b border-zinc-800 px-5 py-6 text-slate-900 no-underline backdrop-blur
                 md:px-16
-              dark:text-white
+              dark:text-white 
              
             ${inter.className} ${isScrolled ? " border-b  border-zinc-800 dark:border-zinc-900" : " "}
 

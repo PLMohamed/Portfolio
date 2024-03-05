@@ -9,7 +9,7 @@ export default function Loading() {
                 <div className="mb-2 h-4 w-60 rounded bg-gray-300 dark:bg-zinc-700"></div>
                 <div className="mb-2 h-4 w-40 rounded bg-gray-300 dark:bg-zinc-700"></div>
             </div>
-            <div class="flex h-48 w-full animate-pulse items-center justify-center rounded-md bg-gray-300  dark:bg-zinc-700">
+            <div className="flex h-48 w-full animate-pulse items-center justify-center rounded-md bg-gray-300  dark:bg-zinc-700">
                 <svg
                     className="h-10 w-full text-gray-200 dark:text-gray-500"
                     aria-hidden="true"
