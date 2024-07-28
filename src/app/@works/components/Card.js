@@ -6,7 +6,7 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 export default function Card({ title, description, image, alt, link }) {
     const disabled = link === "/";
     return (
-        <div className=" w-full rounded-lg border border-gray-200 bg-white shadow dark:border-zinc-700 dark:bg-zinc-800">
+        <div className=" w-full rounded-lg border border-gray-200 bg-white shadow dark:border-zinc-700 dark:bg-zinc-900">
             <Link
                 href={link}
                 className={`flex h-full flex-col justify-between ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}

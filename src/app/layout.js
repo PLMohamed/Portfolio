@@ -11,7 +11,7 @@ config.autoAddCss = false;
 export const metadata = {
     title: "Boumedine Mohamed Touati",
     description:
-        "Protfolio of Boumedine Mohamed Touati 'aka' PLMohamed - Full Stack Developer",
+        "Portfolio of Boumedine Mohamed Touati 'aka' PLMohamed - Full Stack Developer",
     keywords: [
         "Boumedine Mohamed Touati",
         "PLMohamed",
@@ -43,7 +43,7 @@ export default function RootLayout({
         <html lang="en" className="scroll-smooth">
             <body className="space-y-28 scroll-smooth bg-slate-100 text-zinc-900 dark:bg-zinc-800 dark:text-white">
                 <NavBar />
-                <main className="flex flex-col  px-5 md:px-16">
+                <main className="flex flex-col  scroll-smooth px-5 md:px-16">
                     <Suspense fallback={<AboutLoading />}>{about}</Suspense>
                     <Suspense fallback={<ServiceLoading />}>
                         {services}
