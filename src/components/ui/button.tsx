@@ -17,6 +17,7 @@ const buttonVariants = cva(
         icon: 'h-10 w-10',
         lg: 'h-11 rounded px-8',
         sm: 'h-9 rounded px-3',
+        'icon-sm': 'h-8 w-8',
       },
       variant: {
         default: 'bg-primary text-primary-foreground hover:bg-primary/90',
@@ -46,7 +47,7 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const Comp = asChild ? Slot : 'button'
-  return <Comp className={cn(buttonVariants({ className, size, variant }))} ref={ref} {...props} />
+  return <Comp className={cn(buttonVariants({ size, variant, className }))} ref={ref} {...props} />
 }
 
 export { Button, buttonVariants }

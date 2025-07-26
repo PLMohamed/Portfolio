@@ -14,7 +14,7 @@ export const Header: GlobalConfig = {
       type: 'array',
       fields: [
         link({
-          appearances: false,
+          appearances: ['link', 'default', 'outline'],
         }),
       ],
       maxRows: 6,

@@ -1,7 +1,7 @@
 import type { Post, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
 
 import configPromise from '@payload-config'
-import { getPayload } from 'payload'
+import { DataFromCollectionSlug, getPayload } from 'payload'
 import React from 'react'
 import RichText from '@/components/RichText'
 
@@ -12,11 +12,19 @@ export const ArchiveBlock: React.FC<
     id?: string
   }
 > = async (props) => {
-  const { id, categories, introContent, limit: limitFromProps, populateBy, selectedDocs } = props
+  const {
+    id,
+    categories,
+    introContent,
+    limit: limitFromProps,
+    populateBy,
+    selectedDocs,
+    relationTo,
+  } = props
 
   const limit = limitFromProps || 3
 
-  let posts: Post[] = []
+  let posts: DataFromCollectionSlug<Exclude<typeof relationTo, undefined | null>>[] = []
 
   if (populateBy === 'collection') {
     const payload = await getPayload({ config: configPromise })
@@ -27,7 +35,7 @@ export const ArchiveBlock: React.FC<
     })
 
     const fetchedPosts = await payload.find({
-      collection: 'posts',
+      collection: relationTo!,
       depth: 1,
       limit,
       ...(flattenedCategories && flattenedCategories.length > 0
