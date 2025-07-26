@@ -17,12 +17,12 @@ export const Footer: GlobalConfig = {
         link({
           appearances: ['default', 'outline', 'link'],
         }),
-        iconField({
-          overrides: {
-            name: 'testingIcon',
-            label: 'Icon',
-          },
-        }),
+        // iconField({
+        //   overrides: {
+        //     name: 'testingIcon',
+        //     label: 'Icon',
+        //   },
+        // }),
       ],
       maxRows: 6,
       admin: {

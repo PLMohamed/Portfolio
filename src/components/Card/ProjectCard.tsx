@@ -48,7 +48,7 @@ export const ProjectCard: React.FC<{
             <RichText
               data={description}
               enableGutter={false}
-              className="line-clamp-3 overflow-ellipsis"
+              className="line-clamp-3 text-ellipsis"
             />
           </div>
         )}

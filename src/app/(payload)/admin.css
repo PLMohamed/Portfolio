@@ -1,0 +1,16 @@
+@layer theme, base, components, utilities;
+
+@import 'tailwindcss/theme.css' layer(theme);
+
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@config '../../../tailwind.config.mjs';
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@import url('../../styles/variables.css');
+
+/* removing display table in .table class */
+.table {
+  display: inherit;
+}

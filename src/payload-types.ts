@@ -1696,7 +1696,6 @@ export interface Footer {
            */
           appearance?: ('default' | 'outline' | 'link') | null;
         };
-        testingIcon?: 'Select an icon' | null;
         id?: string | null;
       }[]
     | null;
@@ -1745,7 +1744,6 @@ export interface FooterSelect<T extends boolean = true> {
               label?: T;
               appearance?: T;
             };
-        testingIcon?: T;
         id?: T;
       };
   updatedAt?: T;

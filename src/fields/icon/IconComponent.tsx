@@ -125,28 +125,26 @@ export const IconList: React.FC<IconListProps> = ({ path, field, readOnly }) => 
     <Popover open={open} onOpenChange={setOpen}>
       <div className="field-type  tailwind-scope  flex-1">
         <FieldLabel htmlFor={`field-${path}`} label={label} required={field.required} />
-        <div className="field-type__wrap">
-          <PopoverTrigger asChild disabled={readOnly}>
-            <Button
-              variant="outline"
-              role="combobox"
-              className="w-full justify-between   read-only:cursor-not-allowed read-only:opacity-50 field-type__wrap"
-              aria-expanded={open}
-              disabled={readOnly}
-              aria-readonly={readOnly}
-            >
-              {selectedIcon && selectedIconName ? (
-                <div className="flex items-center gap-2">
-                  {selectedIcon}
-                  <span>{selectedIconName}</span>
-                </div>
-              ) : (
-                <span>Select an icon</span>
-              )}
-              <LucideIcons.ChevronsUpDownIcon className="ms-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-        </div>
+        <PopoverTrigger asChild disabled={!!readOnly}>
+          <Button
+            variant="outline"
+            role="combobox"
+            className="w-full justify-between disabled:cursor-not-allowed disabled:opacity-50 bg-card min-h-[38px]"
+            aria-expanded={open}
+            disabled={!!readOnly}
+            aria-readonly={!!readOnly}
+          >
+            {selectedIcon && selectedIconName ? (
+              <div className="flex items-center gap-2">
+                {selectedIcon}
+                <span>{selectedIconName}</span>
+              </div>
+            ) : (
+              <span>Select an icon</span>
+            )}
+            <LucideIcons.ChevronsUpDownIcon className="ms-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
         <TextInput
           value={value}
           onChange={setValue}
