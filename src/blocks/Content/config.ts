@@ -49,8 +49,24 @@ const columnFields: Field[] = [
     label: false,
   },
   {
-    name: 'enableLink',
-    type: 'checkbox',
+    type: 'row',
+    fields: [
+      {
+        name: 'enableLink',
+        type: 'checkbox',
+        admin: {
+          width: 'fit-content',
+        },
+      },
+      {
+        name: 'enableCard',
+        type: 'checkbox',
+        defaultValue: false,
+        admin: {
+          width: 'fit-content',
+        },
+      },
+    ],
   },
   link({
     overrides: {

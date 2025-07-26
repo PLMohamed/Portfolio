@@ -5,6 +5,7 @@ import RichText from '@/components/RichText'
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 
 import { CMSLink } from '../../components/Link'
+import { Card, CardContent } from '@/components/ui/card'
 
 export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
   const { columns } = props
@@ -22,10 +23,11 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
         {columns &&
           columns.length > 0 &&
           columns.map((col, index) => {
-            const { enableLink, link, richText, size } = col
+            const { enableLink, link, richText, size, enableCard } = col
+            const Comp = enableCard ? ContentBlockCard : 'div'
 
             return (
-              <div
+              <Comp
                 className={cn(`col-span-4 lg:col-span-${colsSpanClasses[size!]}`, {
                   'md:col-span-2': size !== 'full',
                 })}
@@ -34,10 +36,23 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
                 {richText && <RichText data={richText} enableGutter={false} />}
 
                 {enableLink && <CMSLink {...link} />}
-              </div>
+              </Comp>
             )
           })}
       </div>
     </div>
+  )
+}
+
+interface ContentBlockCardProps {
+  children: React.ReactNode
+  className?: string
+}
+
+const ContentBlockCard: React.FC<ContentBlockCardProps> = ({ children, className }) => {
+  return (
+    <Card className={className}>
+      <CardContent className="pt-6">{children}</CardContent>
+    </Card>
   )
 }

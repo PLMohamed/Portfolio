@@ -2,6 +2,7 @@ import type { GlobalConfig } from 'payload'
 
 import { link } from '@/fields/link'
 import { revalidateFooter } from './hooks/revalidateFooter'
+import { iconField } from '@/fields/icon'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
@@ -15,6 +16,12 @@ export const Footer: GlobalConfig = {
       fields: [
         link({
           appearances: ['default', 'outline', 'link'],
+        }),
+        iconField({
+          overrides: {
+            name: 'testingIcon',
+            label: 'Icon',
+          },
         }),
       ],
       maxRows: 6,

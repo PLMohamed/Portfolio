@@ -467,6 +467,7 @@ export interface ContentBlock {
           [k: string]: unknown;
         } | null;
         enableLink?: boolean | null;
+        enableCard?: boolean | null;
         link?: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
@@ -1130,6 +1131,7 @@ export interface ContentBlockSelect<T extends boolean = true> {
         size?: T;
         richText?: T;
         enableLink?: T;
+        enableCard?: T;
         link?:
           | T
           | {
@@ -1694,6 +1696,7 @@ export interface Footer {
            */
           appearance?: ('default' | 'outline' | 'link') | null;
         };
+        testingIcon?: 'Select an icon' | null;
         id?: string | null;
       }[]
     | null;
@@ -1742,6 +1745,7 @@ export interface FooterSelect<T extends boolean = true> {
               label?: T;
               appearance?: T;
             };
+        testingIcon?: T;
         id?: T;
       };
   updatedAt?: T;
