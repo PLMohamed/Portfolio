@@ -1,6 +1,7 @@
 import type { Block, Field } from 'payload'
 
 import {
+  AlignFeature,
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
@@ -8,6 +9,8 @@ import {
 } from '@payloadcms/richtext-lexical'
 
 import { link } from '@/fields/link'
+import { iconField } from '@/fields/icon'
+import { animationField } from '@/fields/animations'
 
 const columnFields: Field[] = [
   {
@@ -33,6 +36,7 @@ const columnFields: Field[] = [
       },
     ],
   },
+  iconField({}),
   {
     name: 'richText',
     type: 'richText',
@@ -43,11 +47,15 @@ const columnFields: Field[] = [
           HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
           FixedToolbarFeature(),
           InlineToolbarFeature(),
+          AlignFeature(),
         ]
       },
     }),
     label: false,
   },
+  animationField({
+    fieldType: 'card',
+  }),
   {
     type: 'row',
     fields: [

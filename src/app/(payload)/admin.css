@@ -8,9 +8,32 @@
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
-@import url('../../styles/variables.css');
+@import '../../styles/variables.css';
 
 /* removing display table in .table class */
 .table {
   display: inherit;
+}
+
+/* Use Tailwind's border color utilities instead of custom CSS */
+.border,
+.border-b,
+.border-t,
+.border-l,
+.border-r {
+  @apply border-[var(--theme-border-color)];
+}
+.border:hover,
+.border-b:hover,
+.border-t:hover,
+.border-l:hover,
+.border-r:hover {
+  @apply border-[var(--theme-elevation-250)];
+}
+.border:focus,
+.border-b:focus,
+.border-t:focus,
+.border-l:focus,
+.border-r:focus {
+  @apply border-[var(--theme-elevation-400)];
 }

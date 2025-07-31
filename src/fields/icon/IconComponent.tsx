@@ -51,11 +51,11 @@ export const IconList: React.FC<IconListProps> = ({ path, field, readOnly }) => 
   }, [searchTerm])
 
   const renderIcon = useCallback((iconName: string) => {
-    const IconComponent = LucideIcons[
-      iconName as keyof typeof LucideIcons
-    ] as React.ComponentType<any>
+    const IconComponent = LucideIcons[iconName as keyof typeof LucideIcons] as
+      | React.ComponentType<React.SVGProps<SVGSVGElement>>
+      | undefined
     if (!IconComponent) return null
-    return <IconComponent size={20} />
+    return <IconComponent className="size-10" />
   }, [])
 
   const handleLoadMore = useCallback(() => {
@@ -71,6 +71,7 @@ export const IconList: React.FC<IconListProps> = ({ path, field, readOnly }) => 
 
   // Intersection Observer effect
   useEffect(() => {
+    const currentRef = observerRef.current
     const observer = new IntersectionObserver(
       (entries) => {
         const target = entries[0]
@@ -84,14 +85,15 @@ export const IconList: React.FC<IconListProps> = ({ path, field, readOnly }) => 
       },
     )
 
-    if (observerRef.current) {
-      observer.observe(observerRef.current)
+    if (currentRef) {
+      observer.observe(currentRef)
     }
 
     return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current)
+      if (currentRef) {
+        observer.unobserve(currentRef)
       }
+      observer.disconnect()
     }
   }, [handleLoadMore, isLoading, displayedIcons.length, filteredIcons.length])
 
@@ -103,12 +105,15 @@ export const IconList: React.FC<IconListProps> = ({ path, field, readOnly }) => 
       observerRef.current.focus()
     }
 
-    if (inputRef.current) {
-      inputRef.current.addEventListener('focus', handleOnFocus)
+    const inputElem = inputRef.current
+
+    if (inputElem) {
+      inputElem.addEventListener('focus', handleOnFocus)
     }
+
     return () => {
-      if (inputRef.current) {
-        inputRef.current.removeEventListener('focus', handleOnFocus)
+      if (inputElem) {
+        inputElem.removeEventListener('focus', handleOnFocus)
       }
     }
   }, [inputRef, observerRef])
@@ -119,30 +124,45 @@ export const IconList: React.FC<IconListProps> = ({ path, field, readOnly }) => 
 
   const selectedIcon = useMemo(() => {
     return renderIcon(selectedIconName)
-  }, [selectedIconName])
+  }, [renderIcon, selectedIconName])
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <div className="field-type  tailwind-scope  flex-1">
+      <div className="field-type flex-1">
         <FieldLabel htmlFor={`field-${path}`} label={label} required={field.required} />
         <PopoverTrigger asChild disabled={!!readOnly}>
           <Button
             variant="outline"
             role="combobox"
-            className="w-full justify-between disabled:cursor-not-allowed disabled:opacity-50 bg-card min-h-[38px]"
+            className="w-full justify-between disabled:cursor-not-allowed cursor-auto disabled:opacity-50 bg-card min-h-[38px]"
             aria-expanded={open}
             disabled={!!readOnly}
             aria-readonly={!!readOnly}
           >
             {selectedIcon && selectedIconName ? (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 [&_svg]:size-8 ">
                 {selectedIcon}
-                <span>{selectedIconName}</span>
+                <span>{selectedIconName.replace(/([A-Z])/g, ' $1').trim()}</span>
               </div>
             ) : (
               <span>Select an icon</span>
             )}
-            <LucideIcons.ChevronsUpDownIcon className="ms-2 h-4 w-4 shrink-0 opacity-50" />
+
+            <div className="flex items-center gap-1 ms-2">
+              {selectedIcon && (
+                <LucideIcons.XIcon
+                  role="button"
+                  aria-label="Clear icon selection"
+                  className="size-5 cursor-pointer opacity-100"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setValue('')
+                    setOpen(false)
+                  }}
+                />
+              )}
+              <LucideIcons.ChevronsUpDownIcon className="size-4 shrink-0 opacity-50 cursor-pointer" />
+            </div>
           </Button>
         </PopoverTrigger>
         <TextInput
@@ -154,8 +174,8 @@ export const IconList: React.FC<IconListProps> = ({ path, field, readOnly }) => 
           inputRef={inputRef as React.RefObject<HTMLInputElement>} // Pass the ref to the TextInput for accessibility
         />
       </div>
-      <PopoverContent className="w-full p-0">
-        <Command>
+      <PopoverContent className="w-[var(--radix-popover-trigger-width)] bg-card p-0" align="start">
+        <Command className="w-full bg-card">
           <CommandInput
             placeholder="Search icon..."
             value={searchTerm}
@@ -172,12 +192,15 @@ export const IconList: React.FC<IconListProps> = ({ path, field, readOnly }) => 
                     setValue(currentValue === value ? '' : currentValue)
                     setOpen(false)
                   }}
+                  className="[&_svg]:size-auto"
                 >
                   <LucideIcons.CheckIcon
                     className={cn('me-2 h-4 w-4', value === iconName ? 'opacity-100' : 'opacity-0')}
                   />
                   {renderIcon(iconName)}
-                  <span className="ms-2">{iconName.replace(/([A-Z])/g, ' $1').trim()}</span>
+                  <span className="ms-2 text-base">
+                    {iconName.replace(/([A-Z])/g, ' $1').trim()}
+                  </span>
                 </CommandItem>
               ))}
               {displayedIcons.length < filteredIcons.length && (

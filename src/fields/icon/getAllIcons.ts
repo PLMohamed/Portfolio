@@ -6,7 +6,15 @@ export const getAllLucideIcons = cache((): string[] => {
     (key) =>
       key !== 'createLucideIcon' &&
       key !== 'default' &&
+      key.endsWith('Icon') &&
       typeof LucideIcons[key as keyof typeof LucideIcons] === 'object',
   )
   return iconNames.sort()
+})
+
+export const getLuicdeIconComponent = cache((iconName: string) => {
+  const IconComponent = LucideIcons[iconName as keyof typeof LucideIcons] as
+    | React.ComponentType<React.SVGProps<SVGSVGElement>>
+    | undefined
+  return IconComponent
 })

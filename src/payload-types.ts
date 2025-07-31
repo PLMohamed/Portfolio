@@ -451,6 +451,7 @@ export interface ContentBlock {
   columns?:
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
+        icon?: string | null;
         richText?: {
           root: {
             type: string;
@@ -466,6 +467,11 @@ export interface ContentBlock {
           };
           [k: string]: unknown;
         } | null;
+        animation?: {
+          'card-animation'?: ('fade-in' | 'slide-in' | 'zoom-in') | null;
+          'card-animation-duration'?: number | null;
+          'card-animation-delay'?: number | null;
+        };
         enableLink?: boolean | null;
         enableCard?: boolean | null;
         link?: {
@@ -1129,7 +1135,15 @@ export interface ContentBlockSelect<T extends boolean = true> {
     | T
     | {
         size?: T;
+        icon?: T;
         richText?: T;
+        animation?:
+          | T
+          | {
+              'card-animation'?: T;
+              'card-animation-duration'?: T;
+              'card-animation-delay'?: T;
+            };
         enableLink?: T;
         enableCard?: T;
         link?:
@@ -1696,6 +1710,7 @@ export interface Footer {
            */
           appearance?: ('default' | 'outline' | 'link') | null;
         };
+        testingIcon?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1744,6 +1759,7 @@ export interface FooterSelect<T extends boolean = true> {
               label?: T;
               appearance?: T;
             };
+        testingIcon?: T;
         id?: T;
       };
   updatedAt?: T;

@@ -1,6 +1,6 @@
 import deepMerge from '@/utilities/deepMerge'
 import { Field } from 'payload'
-import { getAllLucideIcons } from './getAllIcons'
+import { validateIcons } from './hooks/validateIcons'
 
 type Icon = (options?: { overrides?: Partial<Field>; required?: boolean }) => Field
 
@@ -11,15 +11,10 @@ type Icon = (options?: { overrides?: Partial<Field>; required?: boolean }) => Fi
  */
 export const iconField: Icon = (options = { overrides: {}, required: false }) => {
   const { overrides, required } = options
-  const icons = ['Select an icon']
 
   const iconField: Field = {
     name: 'icon',
-    type: 'select',
-    options: icons.map((iconName) => ({
-      label: iconName,
-      value: iconName,
-    })),
+    type: 'text',
     required,
     admin: {
       components: {
@@ -28,6 +23,7 @@ export const iconField: Icon = (options = { overrides: {}, required: false }) =>
         },
       },
     },
+    validate: validateIcons,
   }
 
   return deepMerge(iconField, overrides)
