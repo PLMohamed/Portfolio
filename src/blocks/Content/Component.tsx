@@ -42,8 +42,9 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
       'card-animation-delay'?: number | null
     },
     index?: number,
+    enableAnimation: boolean = false,
   ) => {
-    if (!animation || !animation['card-animation']) return children
+    if (!enableAnimation || !animation || !animation['card-animation']) return children
 
     const animationType = animation['card-animation']
     const duration = (animation['card-animation-duration'] || 600) / 1000 // Convert to seconds
@@ -85,11 +86,11 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
   const shouldUseStagger =
     columns &&
     columns.length > 1 &&
-    columns.some((col) => col.animation && col.animation['card-animation'])
+    columns.some((col) => col.enableAnimation && col.animation && col.animation['card-animation'])
 
   const renderColumns = () => {
     return columns?.map((col, index) => {
-      const { enableLink, link, richText, size, enableCard, icon, animation } = col
+      const { enableLink, link, richText, size, enableCard, icon, animation, enableAnimation } = col
       const Comp = enableCard ? ContentBlockCard : 'div'
       const IconComponent = icon ? getLuicdeIconComponent(icon) : undefined
 
@@ -118,7 +119,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
       }
 
       // Otherwise, wrap with individual animation
-      return wrapWithAnimation(columnContent, animation, index)
+      return wrapWithAnimation(columnContent, animation, index, !!enableAnimation)
     })
   }
 

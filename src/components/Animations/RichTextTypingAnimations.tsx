@@ -4,6 +4,8 @@ type RichTextTypingAnimationsProps = {
   content: React.ReactNode
   typingSpeed?: number // ms per character
   className?: string
+  startDelay?: number // initial delay before starting animation
+  onComplete?: () => void
 }
 
 function getTextNodes(node: React.ReactNode): string[] {
@@ -54,35 +56,63 @@ const RichTextTypingAnimations: React.FC<RichTextTypingAnimationsProps> = ({
   content,
   typingSpeed = 40,
   className,
+  startDelay = 0,
+  onComplete,
 }) => {
   const [visibleChars, setVisibleChars] = useState(0)
+  const [hasStarted, setHasStarted] = useState(false)
   const textNodes = useRef(getTextNodes(content))
   const totalChars = useRef(textNodes.current.join('').length)
 
   useEffect(() => {
     setVisibleChars(0)
+    setHasStarted(false)
     textNodes.current = getTextNodes(content)
     totalChars.current = textNodes.current.join('').length
+
+    // Start delay
+    const startTimeout = setTimeout(() => {
+      setHasStarted(true)
+    }, startDelay)
+
+    return () => clearTimeout(startTimeout)
+  }, [content, startDelay])
+
+  useEffect(() => {
+    if (!hasStarted) return
+
     let timeout: NodeJS.Timeout
     function type() {
       setVisibleChars((prev) => {
         if (prev < totalChars.current) {
           timeout = setTimeout(type, typingSpeed)
           return prev + 1
+        } else {
+          // Animation complete
+          if (onComplete) {
+            setTimeout(onComplete, 500) // Small delay before calling onComplete
+          }
+          return prev
         }
-        return prev
       })
     }
     type()
     return () => clearTimeout(timeout)
-  }, [content, typingSpeed])
+  }, [hasStarted, typingSpeed, onComplete])
+
+  const showCursor = hasStarted && visibleChars < totalChars.current
 
   return (
     <span className={className} aria-live="polite">
       {splitRichText(content, visibleChars)}
-      <span className="typing-cursor" style={{ display: 'inline-block', width: '1ch' }}>
-        |
-      </span>
+      {showCursor && (
+        <span
+          className="typing-cursor animate-pulse"
+          style={{ display: 'inline-block', width: '1ch' }}
+        >
+          |
+        </span>
+      )}
     </span>
   )
 }

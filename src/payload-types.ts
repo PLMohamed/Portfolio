@@ -193,6 +193,22 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
     mediaTwo?: (number | null) | Media;
+    enableAnimation?: boolean | null;
+    'text-animation'?: {
+      'text-animation'?: ('fade-in' | 'slide-in' | 'zoom-in' | 'bounce' | 'typewriter') | null;
+      'text-animation-duration'?: number | null;
+      'text-animation-delay'?: number | null;
+    };
+    'image-animation'?: {
+      'image-animation'?: ('fade-in' | 'slide-in' | 'zoom-in') | null;
+      'image-animation-duration'?: number | null;
+      'image-animation-delay'?: number | null;
+    };
+    'card-animation'?: {
+      'card-animation'?: ('fade-in' | 'slide-in' | 'zoom-in') | null;
+      'card-animation-duration'?: number | null;
+      'card-animation-delay'?: number | null;
+    };
   };
   layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
   meta?: {
@@ -467,13 +483,14 @@ export interface ContentBlock {
           };
           [k: string]: unknown;
         } | null;
+        enableLink?: boolean | null;
+        enableCard?: boolean | null;
+        enableAnimation?: boolean | null;
         animation?: {
           'card-animation'?: ('fade-in' | 'slide-in' | 'zoom-in') | null;
           'card-animation-duration'?: number | null;
           'card-animation-delay'?: number | null;
         };
-        enableLink?: boolean | null;
-        enableCard?: boolean | null;
         link?: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
@@ -1078,6 +1095,28 @@ export interface PagesSelect<T extends boolean = true> {
             };
         media?: T;
         mediaTwo?: T;
+        enableAnimation?: T;
+        'text-animation'?:
+          | T
+          | {
+              'text-animation'?: T;
+              'text-animation-duration'?: T;
+              'text-animation-delay'?: T;
+            };
+        'image-animation'?:
+          | T
+          | {
+              'image-animation'?: T;
+              'image-animation-duration'?: T;
+              'image-animation-delay'?: T;
+            };
+        'card-animation'?:
+          | T
+          | {
+              'card-animation'?: T;
+              'card-animation-duration'?: T;
+              'card-animation-delay'?: T;
+            };
       };
   layout?:
     | T
@@ -1137,6 +1176,9 @@ export interface ContentBlockSelect<T extends boolean = true> {
         size?: T;
         icon?: T;
         richText?: T;
+        enableLink?: T;
+        enableCard?: T;
+        enableAnimation?: T;
         animation?:
           | T
           | {
@@ -1144,8 +1186,6 @@ export interface ContentBlockSelect<T extends boolean = true> {
               'card-animation-duration'?: T;
               'card-animation-delay'?: T;
             };
-        enableLink?: T;
-        enableCard?: T;
         link?:
           | T
           | {

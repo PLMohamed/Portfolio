@@ -53,9 +53,6 @@ const columnFields: Field[] = [
     }),
     label: false,
   },
-  animationField({
-    fieldType: 'card',
-  }),
   {
     type: 'row',
     fields: [
@@ -74,8 +71,27 @@ const columnFields: Field[] = [
           width: 'fit-content',
         },
       },
+      {
+        name: 'enableAnimation',
+        type: 'checkbox',
+        defaultValue: false,
+        admin: {
+          width: 'fit-content',
+        },
+      },
     ],
   },
+  animationField({
+    fieldType: 'card',
+    overrides: {
+      admin: {
+        width: '100%',
+        condition: (_data, siblingData) => {
+          return Boolean(siblingData?.enableAnimation)
+        },
+      },
+    },
+  }),
   link({
     overrides: {
       admin: {

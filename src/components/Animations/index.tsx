@@ -9,6 +9,7 @@ export { TypingAnimation } from './TypingAnimation'
 export { FloatingAnimation } from './FloatingAnimation'
 export { ParallaxContainer } from './ParallaxContainer'
 export { AnimationShowcase } from './AnimationShowcase'
+export { default as RichTextTypingAnimations } from './RichTextTypingAnimations'
 
 // Re-export commonly used types
 export type {

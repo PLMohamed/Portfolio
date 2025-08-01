@@ -8,6 +8,7 @@ import {
 } from '@payloadcms/richtext-lexical'
 
 import { linkGroup } from '@/fields/linkGroup'
+import { animationField } from '@/fields/animations'
 
 export const hero: Field = {
   name: 'hero',
@@ -81,6 +82,79 @@ export const hero: Field = {
       relationTo: 'media',
       required: true,
     },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'enableAnimation',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: {
+            width: 'fit-content',
+          },
+        },
+      ],
+    },
+    {
+      type: 'tabs',
+      admin: {
+        width: '100%',
+        condition: (_data, siblingData) => {
+          return Boolean(siblingData?.enableAnimation)
+        },
+      },
+      tabs: [
+        {
+          label: 'Text Animation',
+          fields: [
+            animationField({
+              fieldType: 'text',
+              overrides: {
+                name: 'text-animation',
+              },
+            }),
+          ],
+          admin: {
+            condition: (_data, siblingData) => {
+              return Boolean(siblingData?.enableAnimation)
+            },
+          },
+        },
+        {
+          label: 'Media Animation',
+          fields: [
+            animationField({
+              fieldType: 'image',
+              overrides: {
+                name: 'image-animation',
+              },
+            }),
+          ],
+          admin: {
+            condition: (_data, siblingData) => {
+              return Boolean(siblingData?.enableAnimation)
+            },
+          },
+        },
+        {
+          label: 'Links Animation',
+          fields: [
+            animationField({
+              fieldType: 'card',
+              overrides: {
+                name: 'card-animation',
+              },
+            }),
+          ],
+          admin: {
+            condition: (_data, siblingData) => {
+              return Boolean(siblingData?.enableAnimation)
+            },
+          },
+        },
+      ],
+    },
   ],
+
   label: false,
 }
