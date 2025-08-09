@@ -1,61 +1,101 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Image from "next/image";
-import Link from "next/link";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { cn } from "@/lib/utils";
+import FadeIn from "@/components/Animations/FadeIn";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Link } from "@/components/ui/link";
 import { Project } from "@/lib/projects/data";
+import { cn } from "@/lib/utils";
+import { DownloadIcon, ExternalLinkIcon, GithubIcon } from "lucide-react";
+import Image from "next/image";
 
-export default function Card({
+export default function ProjectCard({
   title,
   description,
   image,
   alt,
-  link,
+  previewLink,
+  sourceLink,
+  downloadLink,
 }: Project) {
-  const disabled = link === "/";
+  const hasLinks = previewLink || sourceLink || downloadLink;
 
   return (
-    <div className=" w-full rounded-lg border border-gray-200 bg-white shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
-      <Link
-        href={link}
-        className={cn(
-          "flex h-full flex-col justify-between",
-          disabled ? "cursor-not-allowed" : "cursor-pointer",
-        )}
+    <FadeIn
+      classNameInView="opacity-100 translate-y-0"
+      classNameNotInView="opacity-0 translate-y-10"
+      className="transition-all duration-300"
+    >
+      <Card
+        className={cn({
+          "pt-0": !!image,
+        })}
       >
-        <div>
-          {image && (
-            <Image
-              className="rounded-t-lg"
-              src={image}
-              alt={alt || title}
-              width={600}
-              height={400}
-              style={{ width: "100%", height: "auto" }}
-              loading="lazy"
-            />
-          )}
-          <div className="p-5">
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+        {image && (
+          <Image
+            className="rounded-t-xl"
+            src={image}
+            alt={alt || title}
+            width={600}
+            height={400}
+            style={{ width: "100%", height: "auto" }}
+            loading="lazy"
+          />
+        )}
+        <CardHeader>
+          <CardTitle>
+            <h3 className="text-lg font-bold tracking-tight md:text-xl lg:text-2xl">
               {title}
-            </h5>
-            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              {description}
-            </p>
-          </div>
-        </div>
-        <span
-          className={cn(
-            "focus:outline-hidden m-5 flex w-fit content-center items-center gap-2 rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium  text-white focus:ring-4 focus:ring-blue-300 dark:bg-blue-600  dark:focus:ring-blue-800",
-            disabled
-              ? "cursor-not-allowed opacity-80"
-              : "cursor-pointer hover:bg-blue-800 dark:hover:bg-blue-700",
-          )}
-        >
-          <span>{disabled ? "Not Available" : "Source Code & Preview"}</span>
-          {disabled ? null : <FontAwesomeIcon icon={faArrowRight} />}
-        </span>
-      </Link>
-    </div>
+            </h3>
+          </CardTitle>
+          <CardDescription>
+            <p className="md:text-base">{description}</p>
+          </CardDescription>
+        </CardHeader>
+        {hasLinks && (
+          <CardFooter className="flex-col flex-wrap gap-4 sm:flex-row lg:flex-col xl:flex-row">
+            {sourceLink && (
+              <Link
+                href={sourceLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="secondary"
+                className="w-full sm:w-fit lg:w-full xl:w-fit"
+              >
+                <GithubIcon />
+                <span>View Source</span>
+              </Link>
+            )}
+
+            {previewLink && (
+              <Link
+                href={previewLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-fit lg:w-full xl:w-fit"
+              >
+                <ExternalLinkIcon />
+                <span>View Live</span>
+              </Link>
+            )}
+
+            {downloadLink && (
+              <Link
+                href={downloadLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-fit lg:w-full xl:w-fit"
+              >
+                <DownloadIcon />
+                <span>Download</span>
+              </Link>
+            )}
+          </CardFooter>
+        )}
+      </Card>
+    </FadeIn>
   );
 }

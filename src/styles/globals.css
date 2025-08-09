@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:is(.dark *));
 
 @theme {
   --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
@@ -24,8 +27,8 @@
   --color-popover: hsl(var(--popover));
   --color-popover-foreground: hsl(var(--popover-foreground));
 
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
 
   --color-secondary: hsl(var(--secondary));
   --color-secondary-foreground: hsl(var(--secondary-foreground));
@@ -41,7 +44,7 @@
 
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
+  --color-ring: var(--ring);
 
   --color-chart-1: hsl(var(--chart-1));
   --color-chart-2: hsl(var(--chart-2));
@@ -104,13 +107,7 @@
 
 @layer utilities {
   :root {
-    --stroke-default: #27272a;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --stroke-default: #e2e8f0;
-    }
+    --stroke-default: var(--color-foreground);
   }
 
   @supports (-webkit-text-stroke: 1px var(--stroke-default)) {
@@ -119,20 +116,24 @@
       color: transparent;
     }
   }
+
+  .container {
+    @apply mx-auto px-5 sm:px-8 lg:px-16;
+  }
 }
 
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --foreground: 0 0% 4%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 0 0% 4%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+    --popover-foreground: 0 0% 4%;
+    --primary: var(--color-blue-600);
+    --primary-foreground: var(--color-blue-50);
+    --secondary: 0 0.24% 96.06%;
+    --secondary-foreground: 0 0.02% 9.06%;
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
     --accent: 240 4.8% 95.9%;
@@ -141,7 +142,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
+    --ring: var(--color-blue-400);
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -150,17 +151,17 @@
     --radius: 0.5rem;
   }
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
+    --background: 0 0% 4%;
+    --foreground: 0 0.5% 98.03%;
+    --card: 0 0.02% 9.06%;
+    --card-foreground: 0 0.5% 98.03%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0.5% 98.03%;
+    --primary: var(--color-blue-500);
+    --primary-foreground: var(--color-blue-50);
+    --secondary: 0 0.01% 14.94%;
+    --secondary-foreground: 0 0.5% 98.03%;
+    --muted: 0 0.01% 14.94%;
     --muted-foreground: 240 5% 64.9%;
     --accent: 240 3.7% 15.9%;
     --accent-foreground: 0 0% 98%;
@@ -168,7 +169,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --ring: var(--color-blue-900);
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;

@@ -1,33 +1,29 @@
-import Main from "@/components/main";
-import {
-  faComputer,
-  faFlaskVial,
-  faEarth,
-} from "@fortawesome/free-solid-svg-icons";
-import Card from "./components/Card";
+import ServicesCard from "./components/Card";
+import FlaskIcon from "@/assets/FlaskIcon";
+import EarthIcon from "@/assets/EarthIcon";
+import ComputerIcon from "@/assets/ComputerIcon";
 
 export default function Services(): React.JSX.Element {
   return (
-    <Main
+    <article
       id="services"
-      classNameInView="*:w-full lg:*:w-1/3 *:flex-wrap my-12 flex max-w-full flex-col items-stretch  justify-center gap-4 md:flex-row translate-x-0 translate-y-0 opacity-100 transition-all duration-500"
-      classNameNotInView="*:w-full lg:*:w-1/3 *:flex-wrap my-12 flex max-w-full flex-col items-stretch  justify-center gap-4 md:flex-row opacity-0 translate-x-10 md:translate-x-0 md:translate-y-10 transition-all duration-500"
+      className="container grid grid-cols-1 items-stretch justify-center gap-4 md:grid-cols-2 lg:grid-cols-3"
     >
-      <Card
-        icon={faFlaskVial}
+      <ServicesCard
+        icon={FlaskIcon}
         title="Software Testing"
         description="I test software applications to ensure they are free of bugs and errors by perform manual and detailed testing."
       />
-      <Card
-        icon={faEarth}
+      <ServicesCard
+        icon={EarthIcon}
         title="Web Development"
         description="I build web applications using modern technologies and frameworks. I specialize in both front-end and back-end web development."
       />
-      <Card
-        icon={faComputer}
+      <ServicesCard
+        icon={ComputerIcon}
         title="Desktop Applications"
         description="I build desktop applications with modern design and user experience in mind."
       />
-    </Main>
+    </article>
   );
 }

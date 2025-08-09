@@ -1,7 +1,28 @@
 {
   "name": "protfolio",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "author": {
+    "name": "Boumedine Mohamed Touati",
+    "email": "mohamedtouati.boumedine@gmail.com",
+    "url": "https://plmohamed.vercel.app/"
+  },
+  "license": "MIT",
+  "description": "My personal portfolio built with Next.js, Tailwind CSS, and Radix UI.",
+  "keywords": [
+    "portfolio",
+    "nextjs",
+    "tailwindcss",
+    "radix-ui",
+    "web development"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PLMohamed/Portfolio"
+  },
+  "bugs": {
+    "url": "https://github.com/PLMohamed/Portfolio/issues"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -10,14 +31,16 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.7.2",
-    "@fortawesome/free-solid-svg-icons": "^6.7.2",
-    "@fortawesome/react-fontawesome": "^0.2.3",
+    "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-navigation-menu": "^1.2.13",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tooltip": "^1.2.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^11.18.2",
     "lucide-react": "^0.539.0",
     "next": "15.4.6",
+    "next-themes": "^0.4.6",
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "react-fast-marquee": "^1.6.5",
