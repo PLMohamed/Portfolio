@@ -6,8 +6,10 @@ import { motion, useReducedMotion } from "framer-motion";
 
 export default function NavbarDesktopContainer({
   children,
+  className,
 }: {
   children: React.ReactNode;
+  className?: string;
 }) {
   const [didScroll, setDidScroll] = useState<boolean>(false);
   const [hidden, setHidden] = useState<boolean>(false);
@@ -49,9 +51,13 @@ export default function NavbarDesktopContainer({
 
   return (
     <motion.section
-      className={cn("z-50 mb-20 py-4 duration-150 will-change-transform", {
-        "sticky top-0 border-b backdrop-blur-sm": didScroll,
-      })}
+      className={cn(
+        "z-50 py-4 duration-150 will-change-transform",
+        {
+          "sticky top-0 border-b backdrop-blur-sm": didScroll,
+        },
+        className,
+      )}
       ref={headerRef}
       initial={false}
       animate={{ y: hidden ? "-100%" : 0 }}

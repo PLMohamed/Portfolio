@@ -50,7 +50,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
+          <Navbar className="mb-20" />
           <main className="mb-10 flex flex-col gap-8 scroll-smooth md:gap-12 lg:gap-16">
             <Suspense fallback={<AboutLoading />}>{about}</Suspense>
             <Suspense fallback={<ServiceLoading />}>{services}</Suspense>

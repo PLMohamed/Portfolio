@@ -45,6 +45,7 @@ export default function ThemeController() {
         })}
       >
         <MonitorIcon />
+        <span className="sr-only">System Theme</span>
       </Button>
       <Button
         type="button"
@@ -57,6 +58,7 @@ export default function ThemeController() {
         })}
       >
         <SunIcon />
+        <span className="sr-only">Light Theme</span>
       </Button>
       <Button
         type="button"
@@ -69,6 +71,7 @@ export default function ThemeController() {
         })}
       >
         <MoonIcon />
+        <span className="sr-only">Dark Theme</span>
       </Button>
     </div>
   );

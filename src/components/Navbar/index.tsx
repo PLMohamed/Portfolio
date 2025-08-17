@@ -20,9 +20,9 @@ import ThemeController from "../Theme/Controller";
 
 const lobster = Lobster({ subsets: ["latin"], weight: "400", display: "swap" });
 
-export default function Navbar() {
+export default function Navbar({ className }: { className?: string }) {
   return (
-    <NavbarDesktopContainer>
+    <NavbarDesktopContainer className={className}>
       <header className="container">
         {/* Desktop Menu */}
         <nav className="relative hidden min-h-10 justify-between lg:flex">
@@ -63,6 +63,7 @@ export default function Navbar() {
                 <SheetTrigger asChild>
                   <Button variant="outline" size="icon">
                     <MenuIcon className="size-4" />
+                    <span className="sr-only">Open Menu</span>
                   </Button>
                 </SheetTrigger>
                 <SheetContent className="overflow-y-auto">
