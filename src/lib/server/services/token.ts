@@ -201,7 +201,7 @@ export async function getSessionToken(): Promise<UserTokenPayload | null> {
  */
 export async function setSessionToken(
   payload: UserTokenPayload,
-  expiresHours: number,
+  expiresHours = 2,
 ): Promise<string> {
   try {
     const token = await generateJwtToken(payload, `${expiresHours}h`);

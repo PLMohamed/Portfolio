@@ -1,3 +1,5 @@
+import AdminHeader from "@/components/Header";
+import TokenHandler from "@/components/Other/Token";
 import { AppSidebar } from "@/components/Sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
@@ -5,7 +7,7 @@ import { withAuthPage } from "@/lib/server/wrappers";
 import Providers from "@/providers";
 import "@/styles/globals.css";
 import { Metadata } from "next";
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 
 export const metadata: Metadata = {
   title: {
@@ -45,10 +47,17 @@ function RootLayout({ children }: RootLayoutProps) {
         <Providers>
           <SidebarProvider>
             <AppSidebar />
-            <main className="mb-10 flex h-full w-full flex-col gap-8 scroll-smooth md:gap-12 lg:gap-16">
-              {children}
+            <main className="flex h-full w-full flex-col scroll-smooth">
+              <AdminHeader />
+              <div className="@container/main flex flex-1 flex-col gap-4 py-4 md:gap-6 md:py-6">
+                {children}
+              </div>
             </main>
             <Toaster position="bottom-right" />
+
+            <Suspense>
+              <TokenHandler />
+            </Suspense>
           </SidebarProvider>
         </Providers>
       </body>

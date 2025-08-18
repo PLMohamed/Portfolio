@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   SidebarGroup,
@@ -7,15 +9,22 @@ import {
   SidebarMenuItem,
 } from "../ui/sidebar";
 import { sidebarItems } from "./data";
+import { usePathname } from "next/navigation";
 
 export function NavMain() {
+  const pathname = usePathname();
+
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           {sidebarItems.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title} asChild>
+              <SidebarMenuButton
+                tooltip={item.title}
+                isActive={pathname === item.url}
+                asChild
+              >
                 <Link href={item.url}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>

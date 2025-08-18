@@ -7,9 +7,11 @@ import {
   type SQL,
   type SelectedFields,
   type InferSelectModel,
+  count,
 } from "drizzle-orm";
 import { cache } from "react";
 import { PROJECT_SCHEMA } from "../schema";
+import { PaginationData } from "@/types/data/pagination";
 
 type ProjectTable = typeof PROJECT_SCHEMA;
 type ProjectColumns =
@@ -61,8 +63,8 @@ export const getProjects = cache(
       ProjectTable
     > = typeof DEFAULT_SELECT,
   >(
-    filters: SQL | SQL[] = [],
     selectFields?: TSelect,
+    filters: SQL | SQL[] = [],
     opts?: {
       offset?: number;
       limit?: number;
@@ -71,7 +73,7 @@ export const getProjects = cache(
         direction?: "asc" | "desc";
       };
     },
-  ): Promise<InferSelectedFields<TSelect>[]> => {
+  ): Promise<PaginationData<InferSelectedFields<TSelect>[]>> => {
     const fields = (selectFields ?? DEFAULT_SELECT) as TSelect;
     const { offset, limit, orderBy } = opts ?? {};
 
@@ -99,7 +101,37 @@ export const getProjects = cache(
       query.limit(limit);
     }
 
-    const results = (await query) as InferSelectedFields<TSelect>[];
-    return results;
+    const [count, results] = (await Promise.all([
+      getProjectCount(whereClause),
+      query,
+    ])) as [
+      Awaited<ReturnType<typeof getProjectCount>>,
+      InferSelectedFields<TSelect>[],
+    ];
+
+    return {
+      data: results,
+      total: count,
+      currentPage: offset ? Math.ceil(offset / (limit ?? 10)) + 1 : 1,
+      totalPages: Math.ceil(count / (limit ?? 1)),
+    };
+  },
+);
+
+export const getProjectCount = cache(
+  async (filters: SQL | SQL[] = []): Promise<number> => {
+    const whereClause = Array.isArray(filters)
+      ? filters.length > 0
+        ? and(...filters)
+        : undefined
+      : filters;
+
+    const [result] = await db
+      .select({ count: count(PROJECT_SCHEMA.id) })
+      .from(PROJECT_SCHEMA)
+      .where(whereClause)
+      .limit(1);
+
+    return result?.count ?? 0;
   },
 );
