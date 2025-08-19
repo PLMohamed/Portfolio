@@ -14,12 +14,11 @@ export default async function ProjectsContainer({
   searchParams,
 }: ContainerProps) {
   const [validatedFilters] = validateSchema(projectSchema, [searchParams]);
-  console.log("Validated Filters:", validatedFilters);
-  const { data: projects } = await ActionGetProjects(validatedFilters);
+  const { data } = await ActionGetProjects(validatedFilters);
 
   return (
-    <section className="px-4">
-      <ProjectsTable data={projects?.data ?? []} />
+    <section className="space-y-4 px-4">
+      <ProjectsTable data={data} />
     </section>
   );
 }

@@ -41,6 +41,7 @@ const baseActionGetProject = async (
       orderBy: request.sortBy
         ? {
             column: PROJECT_SCHEMA[request.sortBy],
+            direction: request.order,
           }
         : undefined,
     },

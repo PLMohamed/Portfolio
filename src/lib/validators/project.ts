@@ -14,4 +14,5 @@ export const projectFilterValidator = z.object({
   sortBy: z
     .enum(["title", "description", "is_visible", "createdAt", "updatedAt"])
     .optional(),
+  order: z.enum(["asc", "desc"]).optional(),
 }) satisfies z.ZodType<FilterRequest<ProjectFilter>>;

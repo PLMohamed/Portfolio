@@ -1,14 +1,30 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable, DataTableProvider } from "@/components/ui/data-table";
 import { ProjectsResponse, useProjectColumns } from "./Columns";
+import { DataTablePaginations } from "@/components/ui/data-table/paginations";
+import { DataTableColumnsCustomize } from "@/components/ui/data-table/visibility";
 
 interface ProjectsTableProps {
-  data: ProjectsResponse[];
+  data: ProjectsResponse | undefined;
 }
 
 export default function ProjectsTable({ data }: ProjectsTableProps) {
   const columns = useProjectColumns();
 
-  return <DataTable columns={columns} data={data} />;
+  return (
+    <DataTableProvider
+      columns={columns}
+      data={data?.data ?? []}
+      paginations={{
+        page: data?.currentPage ?? 1,
+        totalPages: data?.totalPages ?? 1,
+        total: data?.total ?? 0,
+      }}
+    >
+      <DataTableColumnsCustomize />
+      <DataTable />
+      <DataTablePaginations />
+    </DataTableProvider>
+  );
 }

@@ -45,6 +45,9 @@
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
 
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: var(--ring);
@@ -145,7 +148,9 @@
     --destructive-foreground: 0 0% 98%;
     --success: var(--color-green-600);
     --success-foreground: var(--color-green-600);
-    --border: 240 5.9% 90%;
+    --warning: 39 100% 55%;
+    --warning-foreground: 0 0% 98%;
+    --border: 0 0.09% 89.82%;
     --input: 240 5.9% 90%;
     --ring: var(--color-blue-400);
     --chart-1: 12 76% 61%;
@@ -160,7 +165,7 @@
     --foreground: 0 0.5% 98.03%;
     --card: 0 0.02% 9.06%;
     --card-foreground: 0 0.5% 98.03%;
-    --popover: 0 0% 4%;
+    --popover: 0 0.01% 14.94%;
     --popover-foreground: 0 0.5% 98.03%;
     --primary: var(--color-blue-500);
     --primary-foreground: var(--color-blue-50);
@@ -168,13 +173,15 @@
     --secondary-foreground: 0 0.5% 98.03%;
     --muted: 0 0.01% 14.94%;
     --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
+    --accent: 0 0.01% 25.05%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --success: var(--color-green-400);
     --success-foreground: var(--color-green-400);
-    --border: 240 3.7% 15.9%;
+    --warning: 39 100% 55%;
+    --warning-foreground: 0 0% 98%;
+    --border: 0 0% 100% / 10%;
     --input: 240 3.7% 15.9%;
     --ring: var(--color-blue-900);
     --chart-1: 220 70% 50%;
