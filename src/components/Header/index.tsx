@@ -19,6 +19,7 @@ const BREADCRUMB_TITLES = {
   "/admin/projects": "Projects",
   "/admin/users": "Users",
   "/admin/settings": "Settings",
+  "/admin/projects/new": "New Project",
 };
 
 const BREADCRUMB_LINK_TITLE = {
@@ -26,6 +27,7 @@ const BREADCRUMB_LINK_TITLE = {
   projects: "Projects",
   users: "Users",
   settings: "Settings",
+  new: "New",
 };
 
 export default function AdminHeader(): React.JSX.Element {

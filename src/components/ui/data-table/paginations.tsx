@@ -60,10 +60,13 @@ function DataTablePaginations() {
   );
 
   return (
-    <Pagination className="justify-end">
-      <PaginationContent className="gap-2">
-        <PaginationItem className="hidden items-center gap-2 lg:mr-8 lg:flex">
-          <Label htmlFor="rows-per-page" className="text-sm font-medium">
+    <Pagination className="justify-start sm:justify-end">
+      <PaginationContent className="flex-wrap gap-2">
+        <PaginationItem className="flex items-center gap-2 max-sm:basis-full sm:mr-8">
+          <Label
+            htmlFor="rows-per-page"
+            className="text-sm font-medium max-sm:shrink-0"
+          >
             Rows per page
           </Label>
           <Select
@@ -72,7 +75,11 @@ function DataTablePaginations() {
               table.setPageSize(Number(value));
             }}
           >
-            <SelectTrigger size="sm" className="w-20" id="rows-per-page">
+            <SelectTrigger
+              size="sm"
+              className="min-w-20 max-sm:w-full"
+              id="rows-per-page"
+            >
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">

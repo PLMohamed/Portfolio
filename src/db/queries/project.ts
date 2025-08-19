@@ -1,17 +1,17 @@
 import { db } from "@/db";
+import { PaginationData } from "@/types/data/pagination";
 import {
   and,
   asc,
+  count,
   desc,
   eq,
+  type InferSelectModel,
   type SQL,
   type SelectedFields,
-  type InferSelectModel,
-  count,
 } from "drizzle-orm";
 import { cache } from "react";
-import { PROJECT_SCHEMA } from "../schema";
-import { PaginationData } from "@/types/data/pagination";
+import { PROJECT_SCHEMA, ProjectInsert } from "../schema";
 
 type ProjectTable = typeof PROJECT_SCHEMA;
 type ProjectColumns =
@@ -135,3 +135,11 @@ export const getProjectCount = cache(
     return result?.count ?? 0;
   },
 );
+
+export const createProject = cache(async (values: ProjectInsert) => {
+  const [result] = await db.insert(PROJECT_SCHEMA).values(values).returning({
+    insertedId: PROJECT_SCHEMA.id,
+  });
+
+  return result;
+});

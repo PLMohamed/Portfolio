@@ -16,7 +16,7 @@ function DataTableColumnsCustomize() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="ms-auto">
+        <Button variant="outline">
           <Columns2Icon />
           <span>Customize Columns</span>
         </Button>

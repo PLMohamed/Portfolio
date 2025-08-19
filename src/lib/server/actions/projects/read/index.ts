@@ -1,11 +1,12 @@
 "use server";
 
-import { getProjects } from "@/db/queries";
+import { getProjectById, getProjects } from "@/db/queries";
 import { PROJECT_SCHEMA, ProjectType } from "@/db/schema";
 import { withActionValidator, withAuthAction } from "@/lib/server/wrappers";
 import { projectFilterValidator } from "@/lib/validators/project";
+import { like, or, SQL } from "drizzle-orm";
 import z from "zod";
-import { createServerAction } from "../..";
+import { ClientError, createServerAction } from "../..";
 
 export type ProjectFilter = Partial<
   Omit<
@@ -25,6 +26,15 @@ const baseActionGetProject = async (
   request: z.infer<typeof projectFilterValidator>,
   _sessionObject: unknown,
 ) => {
+  let condition: SQL | undefined;
+
+  if (request.q) {
+    condition = or(
+      like(PROJECT_SCHEMA.title, `%${request.q}%`),
+      like(PROJECT_SCHEMA.description, `%${request.q}%`),
+    );
+  }
+
   const projects = await getProjects(
     {
       id: PROJECT_SCHEMA.id,
@@ -34,7 +44,7 @@ const baseActionGetProject = async (
       createdAt: PROJECT_SCHEMA.createdAt,
       updatedAt: PROJECT_SCHEMA.updatedAt,
     },
-    undefined,
+    condition,
     {
       offset: (request.page - 1) * request.limit,
       limit: request.limit,
@@ -57,4 +67,35 @@ const validatedGetProjects = withActionValidator(
 
 export const ActionGetProjects = createServerAction(
   withAuthAction(validatedGetProjects),
+);
+
+const getProjectByIdActionSchema = z.tuple([
+  z.uuid().nonempty("Id is required"),
+  z.object({
+    session: z.any(),
+  }),
+]);
+
+const baseActionGetProjectById = async (
+  request: z.infer<typeof getProjectByIdActionSchema>[0],
+  _sessionObject: unknown,
+) => {
+  const [id] = request;
+
+  const project = await getProjectById(id);
+
+  if (!project) {
+    throw new ClientError("Project not found");
+  }
+
+  return project;
+};
+
+const validatedGetProjectById = withActionValidator(
+  baseActionGetProjectById,
+  getProjectByIdActionSchema,
+);
+
+export const ActionGetProjectById = createServerAction(
+  withAuthAction(validatedGetProjectById),
 );

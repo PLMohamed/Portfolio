@@ -1,5 +1,3 @@
-import * as React from "react";
-import { Input } from "@/components/ui/input";
 import {
   FormControl,
   FormDescription,
@@ -9,12 +7,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
+import * as React from "react";
 import type { Control, FieldPath, FieldValues } from "react-hook-form";
+import { Textarea } from "../textarea";
 
-interface FormInputProps<
+interface FormTextareaProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<React.ComponentProps<typeof Input>, "name"> {
+> extends Omit<React.ComponentProps<typeof Textarea>, "name"> {
   control: Control<TFieldValues>;
   name: TName;
   label?: string;
@@ -23,7 +23,7 @@ interface FormInputProps<
   containerClassName?: string;
 }
 
-function FormInput<
+function FormTextarea<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
@@ -35,7 +35,7 @@ function FormInput<
   containerClassName,
   className,
   ...inputProps
-}: FormInputProps<TFieldValues, TName>) {
+}: FormTextareaProps<TFieldValues, TName>) {
   return (
     <FormField
       control={control}
@@ -49,9 +49,9 @@ function FormInput<
             </FormLabel>
           )}
           <FormControl>
-            <Input
+            <Textarea
               {...field}
-              value={field.value ?? ""}
+              value={field.value ?? undefined}
               {...inputProps}
               className={cn(className)}
             />
@@ -64,4 +64,4 @@ function FormInput<
   );
 }
 
-export { FormInput, type FormInputProps };
+export { FormTextarea, type FormTextareaProps };

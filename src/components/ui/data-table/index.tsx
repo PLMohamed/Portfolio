@@ -46,7 +46,7 @@ function DataTableProvider<TData, TValue>({
   children,
 }: DataTableProviderProps<TData, TValue>) {
   const searchParams = useSearchParams();
-  const { push } = useRouter();
+  const { replace } = useRouter();
 
   const limit = Number(searchParams.get("limit")) || 10;
 
@@ -56,6 +56,7 @@ function DataTableProvider<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     manualSorting: true,
     manualPagination: true,
+    manualFiltering: true,
     pageCount: paginations.totalPages,
     state: {
       pagination: {
@@ -76,7 +77,7 @@ function DataTableProvider<TData, TValue>({
       newParams.set("page", newPageIndex.toString());
       newParams.set("limit", newState.pageSize.toString());
 
-      push(`?${newParams.toString()}`);
+      replace(`?${newParams.toString()}`);
     },
     ...opts,
   });

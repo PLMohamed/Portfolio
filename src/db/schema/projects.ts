@@ -11,7 +11,7 @@ import {
 export const PROJECT_SCHEMA = pgTable("projects", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: varchar("title", { length: 255 }).notNull(),
-  description: text("description"),
+  description: text("description").notNull(),
   image_url: varchar("image_url", { length: 255 }),
   preview_link: varchar("preview_link", { length: 255 }),
   source_link: varchar("source_link", { length: 255 }),

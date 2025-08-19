@@ -3,6 +3,7 @@ export interface FilterRequest<T> {
   limit?: number;
   sortBy?: keyof T;
   order?: "asc" | "desc";
+  q?: string;
 }
 
 export const DEFAULT_FILTER_REQUEST = {

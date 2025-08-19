@@ -62,6 +62,9 @@ function PaginationLink({
           size,
         }),
         "border",
+        {
+          "not-dark:data-[active]:bg-input !cursor-default": !isActive,
+        },
         className,
       )}
       {...props}
