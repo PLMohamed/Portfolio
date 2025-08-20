@@ -21,7 +21,7 @@ export const loginValidator = z.object({
 
 export const signupValidator = z
   .object({
-    email: z.email("Invalid Email").nonempty("Email is Required"),
+    email: z.email("Invalid Email").nonempty("Email is Required").nonoptional(),
     password: z
       .string()
       .nonempty("Password is Required")
@@ -40,9 +40,13 @@ export const signupValidator = z
       .regex(
         REGEX.PASSWORD,
         "Password must be at least 8 characters, include letters and numbers",
-      ),
-    confirmPassword: z.string().nonempty("Confirm Password is Required"),
-    name: z.string().optional().nullable().default(null),
+      )
+      .nonoptional(),
+    confirmPassword: z
+      .string()
+      .nonempty("Confirm Password is Required")
+      .nonoptional(),
+    name: z.string().nullable().default(null).optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",

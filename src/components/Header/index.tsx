@@ -2,9 +2,9 @@
 
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import React, { Fragment } from "react";
+import React, { Fragment, useCallback } from "react";
 import ThemeController from "../Theme/Controller";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -20,6 +20,7 @@ const BREADCRUMB_TITLES = {
   "/admin/users": "Users",
   "/admin/settings": "Settings",
   "/admin/projects/new": "New Project",
+  "/admin/projects/[projectId]": "Edit Project",
 };
 
 const BREADCRUMB_LINK_TITLE = {
@@ -32,8 +33,16 @@ const BREADCRUMB_LINK_TITLE = {
 
 export default function AdminHeader(): React.JSX.Element {
   const pathname = usePathname();
+  const params = useParams();
 
   const parts = pathname.split("/").filter(Boolean);
+
+  const projectId = params?.projectId;
+
+  const handleParams = useCallback((): keyof typeof BREADCRUMB_TITLES => {
+    if (projectId) return "/admin/projects/[projectId]";
+    return pathname as keyof typeof BREADCRUMB_TITLES;
+  }, [pathname, projectId]);
 
   return (
     <header className="flex h-14 shrink-0 items-center justify-between gap-2 border-b px-4 transition-[width,height] ease-linear">
@@ -65,9 +74,7 @@ export default function AdminHeader(): React.JSX.Element {
 
             <BreadcrumbItem>
               <BreadcrumbPage>
-                {BREADCRUMB_TITLES[
-                  pathname as keyof typeof BREADCRUMB_TITLES
-                ] || parts[parts.length - 1]}
+                {BREADCRUMB_TITLES[handleParams()] || parts[parts.length - 1]}
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>

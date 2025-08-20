@@ -14,6 +14,7 @@ import { useLogin } from "@/hooks/api/useAuth";
 import { cn } from "@/lib/utils";
 import { loginValidator } from "@/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -76,7 +77,8 @@ export function LoginForm({
 
                 <div className="flex flex-col gap-3">
                   <Button type="submit" className="w-full" disabled={isPending}>
-                    Login
+                    <span>Login</span>
+                    {isPending && <LoaderIcon className="animate-spin" />}
                   </Button>
                 </div>
               </div>

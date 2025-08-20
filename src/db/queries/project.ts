@@ -92,6 +92,8 @@ export const getProjects = cache(
     if (orderBy) {
       const { column, direction = "asc" } = orderBy;
       query.orderBy(direction === "asc" ? asc(column) : desc(column));
+    } else {
+      query.orderBy(desc(PROJECT_SCHEMA.createdAt));
     }
 
     if (typeof offset === "number") {
@@ -140,6 +142,35 @@ export const createProject = cache(async (values: ProjectInsert) => {
   const [result] = await db.insert(PROJECT_SCHEMA).values(values).returning({
     insertedId: PROJECT_SCHEMA.id,
   });
+
+  return result;
+});
+
+export const updateProject = cache(
+  async (id: string, values: Partial<ProjectInsert>) => {
+    const [result] = await db
+      .update(PROJECT_SCHEMA)
+      .set({
+        ...values,
+        updatedAt: new Date(),
+      })
+      .where(eq(PROJECT_SCHEMA.id, id))
+      .returning({
+        updatedId: PROJECT_SCHEMA.id,
+      });
+
+    return result;
+  },
+);
+
+export const deleteProjectById = cache(async (id: string) => {
+  const [result] = await db
+    .delete(PROJECT_SCHEMA)
+    .where(eq(PROJECT_SCHEMA.id, id))
+    .returning({
+      deletedId: PROJECT_SCHEMA.id,
+      imageUrl: PROJECT_SCHEMA.image_url,
+    });
 
   return result;
 });

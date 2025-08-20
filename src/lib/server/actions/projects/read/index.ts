@@ -77,11 +77,9 @@ const getProjectByIdActionSchema = z.tuple([
 ]);
 
 const baseActionGetProjectById = async (
-  request: z.infer<typeof getProjectByIdActionSchema>[0],
+  id: z.infer<typeof getProjectByIdActionSchema>[0],
   _sessionObject: unknown,
 ) => {
-  const [id] = request;
-
   const project = await getProjectById(id);
 
   if (!project) {

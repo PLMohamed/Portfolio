@@ -3,7 +3,7 @@ import { withAuthPage } from "@/lib/server/wrappers";
 
 async function NewProjectsPage() {
   return (
-    <article className="space-y-4 px-4">
+    <article className="space-y-4 px-4 md:space-y-6 lg:space-y-8">
       <section>
         <h1 className="text-2xl font-bold md:text-3xl">Create New Project</h1>
         <p className="text-muted-foreground max-md:text-sm">

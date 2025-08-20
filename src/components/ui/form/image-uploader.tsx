@@ -10,7 +10,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
-import type { Control, FieldPath, FieldValues } from "react-hook-form";
+import type {
+  Control,
+  ControllerRenderProps,
+  FieldPath,
+  FieldValues,
+} from "react-hook-form";
 import { UploadCloudIcon, XIcon } from "lucide-react";
 import { Input } from "../input";
 import Image from "next/image";
@@ -45,12 +50,25 @@ function FormImageUploader<
   const [isHoveringButton, setIsHoveringButton] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
 
+  const handleSetPreview = React.useCallback((value: string | null) => {
+    setPreview(value);
+  }, []);
+
+  React.useEffect(() => {
+    return () => {
+      if (preview) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
+
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
         <FormItem className={cn(containerClassName)}>
+          <FormImageUploaderHook field={field} setPreview={handleSetPreview} />
           {label && (
             <FormLabel>
               {label}
@@ -81,7 +99,6 @@ function FormImageUploader<
                 const file = e.dataTransfer.files[0];
                 if (file) {
                   field.onChange(file);
-                  setPreview(URL.createObjectURL(file));
                 }
                 setIsDragging(false);
               }}
@@ -93,7 +110,6 @@ function FormImageUploader<
                     size={null}
                     className="dark:bg-destructive absolute -top-3 -right-3 z-20 size-6 rounded-full"
                     onClick={() => {
-                      setPreview(null);
                       field.onChange(null);
                       setIsHoveringButton(false);
                     }}
@@ -133,7 +149,6 @@ function FormImageUploader<
                   const file = e.target.files?.[0];
                   if (file) {
                     field.onChange(file);
-                    setPreview(URL.createObjectURL(file));
                   }
                 }}
                 {...inputProps}
@@ -146,6 +161,27 @@ function FormImageUploader<
       )}
     />
   );
+}
+
+function FormImageUploaderHook<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
+  field,
+  setPreview,
+}: {
+  field: ControllerRenderProps<TFieldValues, TName>;
+  setPreview: (preview: string | null) => void;
+}) {
+  React.useEffect(() => {
+    if (field.value) {
+      setPreview(URL.createObjectURL(field.value));
+    } else {
+      setPreview(null);
+    }
+  }, [field.value, setPreview]);
+
+  return null;
 }
 
 export { FormImageUploader, type FormImageUploaderProps };

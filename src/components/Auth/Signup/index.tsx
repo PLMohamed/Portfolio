@@ -96,7 +96,7 @@ export function SignupForm({
 
                 <div className="flex flex-col gap-3">
                   <Button type="submit" className="w-full" disabled={isPending}>
-                    Sign Up
+                    <span>Sign Up</span>
                     {isPending && <LoaderIcon className="animate-spin" />}
                   </Button>
                 </div>

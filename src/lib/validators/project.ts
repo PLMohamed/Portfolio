@@ -52,7 +52,7 @@ export const projectCreateValidator = z.object({
   image: z
     .file()
     .max(5 * 1024 * 1024) // 5MB
-    .mime("image/*")
+    .mime(["image/jpeg", "image/png", "image/webp", "image/jpg"])
     .nullable()
     .default(null)
     .nonoptional(),

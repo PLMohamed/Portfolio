@@ -10,14 +10,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  useDeleteProject,
+  useUpdateStatusProject,
+} from "@/hooks/api/useProjects";
 import { ActionResponseError } from "@/lib/server/actions";
 import { ActionGetProjects } from "@/lib/server/actions/projects/read";
 import { ColumnDef, SortDirection } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { MoreHorizontalIcon } from "lucide-react";
+import { Loader2Icon, MoreHorizontalIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 export type ProjectsResponse = Exclude<
@@ -30,6 +34,14 @@ export const useProjectColumns = (): ColumnDef<
 >[] => {
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  const { mutate: deleteProject } = useDeleteProject();
+  const { mutate: updateStatusProject } = useUpdateStatusProject();
+
+  const [deleteProjectIndex, setDeleteProjectIndex] = useState<number[]>([]);
+  const [updateStatusProjectIndex, setUpdateStatusProjectIndex] = useState<
+    number[]
+  >([]);
 
   const handleSearchParamsChange = useCallback(
     (newParams: URLSearchParams) => {
@@ -54,6 +66,15 @@ export const useProjectColumns = (): ColumnDef<
       handleSearchParamsChange(newParams);
     },
     [handleSearchParamsChange, searchParams],
+  );
+
+  const handleSetDeleteProjectIndex = useCallback(setDeleteProjectIndex, [
+    setDeleteProjectIndex,
+  ]);
+
+  const handleSetUpdateStatusProjectIndex = useCallback(
+    setUpdateStatusProjectIndex,
+    [setUpdateStatusProjectIndex],
   );
 
   return useMemo(
@@ -89,7 +110,11 @@ export const useProjectColumns = (): ColumnDef<
           );
         },
         cell: ({ row }) => {
-          return <span className="ps-4">{row.getValue("description")}</span>;
+          return (
+            <p className="max-w-md truncate ps-4">
+              {row.getValue("description")}
+            </p>
+          );
         },
       },
       {
@@ -176,22 +201,120 @@ export const useProjectColumns = (): ColumnDef<
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                {project.is_visible ? (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      handleSetUpdateStatusProjectIndex((prev) => [
+                        ...prev,
+                        row.index,
+                      ]);
+
+                      updateStatusProject(
+                        {
+                          id: project.id,
+                          values: false,
+                        },
+                        {
+                          onSuccess: () => {
+                            toast.success(
+                              `Project '${project.title}' status updated successfully`,
+                            );
+                          },
+                          onSettled: () => {
+                            handleSetUpdateStatusProjectIndex((prev) =>
+                              prev.filter((idx) => idx !== row.index),
+                            );
+                          },
+                        },
+                      );
+                    }}
+                    disabled={updateStatusProjectIndex.includes(row.index)}
+                  >
+                    Hide project
+                    {updateStatusProjectIndex.includes(row.index) && (
+                      <Loader2Icon className="animate-spin" />
+                    )}
+                  </DropdownMenuItem>
+                ) : (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      handleSetUpdateStatusProjectIndex((prev) => [
+                        ...prev,
+                        row.index,
+                      ]);
+
+                      updateStatusProject(
+                        {
+                          id: project.id,
+                          values: true,
+                        },
+                        {
+                          onSuccess: () => {
+                            toast.success(
+                              `Project '${project.title}' status updated successfully`,
+                            );
+                          },
+                          onSettled: () => {
+                            handleSetUpdateStatusProjectIndex((prev) =>
+                              prev.filter((idx) => idx !== row.index),
+                            );
+                          },
+                        },
+                      );
+                    }}
+                    disabled={updateStatusProjectIndex.includes(row.index)}
+                  >
+                    Show project
+                    {updateStatusProjectIndex.includes(row.index) && (
+                      <Loader2Icon className="animate-spin" />
+                    )}
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem asChild>
                   <Link href={`/admin/projects/${project.id}`}>
                     <span>Edit project</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => toast.warning("Coming soon!")}>
-                  View customer
+                <DropdownMenuItem
+                  variant="destructive"
+                  onClick={() => {
+                    handleSetDeleteProjectIndex((prev) => [...prev, row.index]);
+
+                    deleteProject(project.id, {
+                      onSettled: () => {
+                        handleSetDeleteProjectIndex((prev) =>
+                          prev.filter((idx) => idx !== row.index),
+                        );
+                      },
+                      onSuccess: () => {
+                        toast.success(
+                          `Project '${project.title}' deleted successfully`,
+                        );
+                      },
+                    });
+                  }}
+                  disabled={deleteProjectIndex.includes(row.index)}
+                >
+                  Delete project
+                  {deleteProjectIndex.includes(row.index) && (
+                    <Loader2Icon className="animate-spin" />
+                  )}
                 </DropdownMenuItem>
-                <DropdownMenuItem>View payment details</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           );
         },
       },
     ],
-    [handleSortingChange],
+    [
+      deleteProject,
+      deleteProjectIndex,
+      handleSetDeleteProjectIndex,
+      handleSetUpdateStatusProjectIndex,
+      handleSortingChange,
+      updateStatusProject,
+      updateStatusProjectIndex,
+    ],
   );
 };

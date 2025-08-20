@@ -1,3 +1,8 @@
+export interface UpdateRequest<T> {
+  id: string;
+  values: T;
+}
+
 export interface FilterRequest<T> {
   page?: number;
   limit?: number;

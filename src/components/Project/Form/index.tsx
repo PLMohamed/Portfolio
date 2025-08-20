@@ -1,19 +1,21 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { FormImageUploader } from "@/components/ui/form/image-uploader";
+import { FormInput } from "@/components/ui/form/input";
+import { FormTextarea } from "@/components/ui/form/textarea";
+import { useCreateProject, useUpdateProject } from "@/hooks/api/useProjects";
 import { ActionResponseError } from "@/lib/server/actions";
 import { ActionGetProjectById } from "@/lib/server/actions/projects/read";
 import { projectCreateValidator } from "@/lib/validators/project";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form } from "@/components/ui/form";
-import { FormInput } from "@/components/ui/form/input";
-import { FormTextarea } from "@/components/ui/form/textarea";
-import { Button } from "@/components/ui/button";
-import { IterationCcwIcon, SaveIcon } from "lucide-react";
+import { IterationCcwIcon, LoaderIcon, SaveIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Link } from "@/components/ui/link";
-import { FormImageUploader } from "@/components/ui/form/image-uploader";
+import { useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 type ProjectResponse = Exclude<
   Awaited<ReturnType<typeof ActionGetProjectById>>,
@@ -27,6 +29,11 @@ interface ProjectFormProps {
 export default function ProjectForm({ project }: ProjectFormProps) {
   const { push } = useRouter();
 
+  const { mutate: createProject, isPending: isPendingCreate } =
+    useCreateProject();
+  const { mutate: updateProject, isPending: isPendingUpdate } =
+    useUpdateProject();
+
   const form = useForm<z.infer<typeof projectCreateValidator>>({
     resolver: zodResolver(projectCreateValidator),
     defaultValues: {
@@ -39,9 +46,53 @@ export default function ProjectForm({ project }: ProjectFormProps) {
     },
   });
 
-  const isUpdate = !!project;
+  const formRef = useRef(form);
 
-  async function onSubmit(data: z.infer<typeof projectCreateValidator>) {}
+  const isUpdate = !!project;
+  const isPending = isPendingCreate || isPendingUpdate;
+
+  async function onSubmit(data: z.infer<typeof projectCreateValidator>) {
+    if (isUpdate) {
+      updateProject(
+        { id: project.id, values: data },
+        {
+          onSuccess: () => {
+            toast.success("Project updated successfully!");
+            push("/admin/projects");
+          },
+        },
+      );
+      return;
+    }
+
+    createProject(data, {
+      onSuccess: () => {
+        toast.success("Project created successfully!");
+        push("/admin/projects");
+      },
+    });
+  }
+
+  useEffect(() => {
+    async function fetchImage() {
+      if (!project?.image_url) return;
+
+      const response = await fetch(project.image_url);
+
+      if (!response.ok) {
+        toast.error("Failed to fetch project image.");
+        return;
+      }
+
+      const blob = await response.blob();
+      const file = new File([blob], "project-image", {
+        type: blob.type,
+      });
+
+      formRef.current.setValue("image", file);
+    }
+    fetchImage();
+  }, [project?.image_url]);
 
   return (
     <Form {...form}>
@@ -98,17 +149,21 @@ export default function ProjectForm({ project }: ProjectFormProps) {
         </section>
 
         <section className="flex flex-wrap items-center justify-end gap-4 max-sm:flex-col-reverse">
-          <Link
-            href="/admin/projects"
+          <Button
             variant="outline"
+            type="button"
             className="max-sm:w-full"
+            disabled={isPending}
+            onClick={() => {
+              push("/admin/projects");
+            }}
           >
             <span>Reset</span>
             <IterationCcwIcon />
-          </Link>
-          <Button type="submit" className="max-sm:w-full">
+          </Button>
+          <Button type="submit" className="max-sm:w-full" disabled={isPending}>
             <span>{isUpdate ? "Update Project" : "Create Project"}</span>
-            <SaveIcon />
+            {isPending ? <LoaderIcon className="animate-spin" /> : <SaveIcon />}
           </Button>
         </section>
       </form>
