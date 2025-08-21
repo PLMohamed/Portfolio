@@ -1,4 +1,4 @@
-import ServicesCard from "./components/Card";
+import ServicesCard from "./Card";
 import FlaskIcon from "@/assets/FlaskIcon";
 import EarthIcon from "@/assets/EarthIcon";
 import ComputerIcon from "@/assets/ComputerIcon";

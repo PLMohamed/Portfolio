@@ -47,7 +47,8 @@ export function createServerAction<T extends unknown[], U>(
           },
         };
       }
-      throw err;
+      console.error("Action error:", err);
+      throw new Error("Internal server error");
     }
   };
 }

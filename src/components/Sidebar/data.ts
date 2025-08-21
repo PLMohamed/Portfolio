@@ -1,4 +1,9 @@
-import { FolderOpenIcon, LayoutDashboardIcon, LucideProps } from "lucide-react";
+import {
+  FolderOpenIcon,
+  LayoutDashboardIcon,
+  LucideProps,
+  MessageSquareTextIcon,
+} from "lucide-react";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 
 export interface SidebarItem {
@@ -19,5 +24,10 @@ export const sidebarItems: SidebarItem[] = [
     title: "Projects",
     url: "/admin/projects",
     icon: FolderOpenIcon,
+  },
+  {
+    title: "Forms",
+    url: "/admin/forms",
+    icon: MessageSquareTextIcon,
   },
 ];

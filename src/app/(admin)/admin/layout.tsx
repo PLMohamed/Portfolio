@@ -1,4 +1,5 @@
 import AdminHeader from "@/components/Header";
+import ErrorDisplayer from "@/components/Other/ErrorDisplayer";
 import TokenHandler from "@/components/Other/Token";
 import { AppSidebar } from "@/components/Sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -57,6 +58,9 @@ function RootLayout({ children }: RootLayoutProps) {
 
             <Suspense>
               <TokenHandler />
+            </Suspense>
+            <Suspense>
+              <ErrorDisplayer />
             </Suspense>
           </SidebarProvider>
         </Providers>

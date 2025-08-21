@@ -3,8 +3,8 @@
 import { getProjectById, getProjects } from "@/db/queries";
 import { PROJECT_SCHEMA, ProjectType } from "@/db/schema";
 import { withActionValidator, withAuthAction } from "@/lib/server/wrappers";
-import { projectFilterValidator } from "@/lib/validators/project";
-import { like, or, SQL } from "drizzle-orm";
+import { paginationsValidator, projectFilterValidator } from "@/lib/validators";
+import { eq, like, or, SQL } from "drizzle-orm";
 import z from "zod";
 import { ClientError, createServerAction } from "../..";
 
@@ -96,4 +96,38 @@ const validatedGetProjectById = withActionValidator(
 
 export const ActionGetProjectById = createServerAction(
   withAuthAction(validatedGetProjectById),
+);
+
+const getPublicProjectActionSchema = z.tuple([paginationsValidator]);
+
+const baseActionGetPublicProject = async (
+  request: z.infer<typeof paginationsValidator>,
+) => {
+  const projects = await getProjects(
+    {
+      id: PROJECT_SCHEMA.id,
+      title: PROJECT_SCHEMA.title,
+      description: PROJECT_SCHEMA.description,
+      download_link: PROJECT_SCHEMA.download_link,
+      image_url: PROJECT_SCHEMA.image_url,
+      preview_link: PROJECT_SCHEMA.preview_link,
+      source_link: PROJECT_SCHEMA.source_link,
+    },
+    eq(PROJECT_SCHEMA.is_visible, true),
+    {
+      offset: (request.page - 1) * request.limit,
+      limit: request.limit,
+    },
+  );
+
+  return projects;
+};
+
+const validatedGetPublicProjects = withActionValidator(
+  baseActionGetPublicProject,
+  getPublicProjectActionSchema,
+);
+
+export const ActionGetPublicProjects = createServerAction(
+  validatedGetPublicProjects,
 );

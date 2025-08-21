@@ -7,7 +7,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Link } from "@/components/ui/link";
-import { Project } from "@/lib/projects/data";
+import { ActionResponseError } from "@/lib/server/actions";
+import { ActionGetPublicProjects } from "@/lib/server/actions/projects";
 import { cn } from "@/lib/utils";
 import { DownloadIcon, ExternalLinkIcon, GithubIcon } from "lucide-react";
 import Image from "next/image";
@@ -15,13 +16,15 @@ import Image from "next/image";
 export default function ProjectCard({
   title,
   description,
-  image,
-  alt,
-  previewLink,
-  sourceLink,
-  downloadLink,
-}: Project) {
-  const hasLinks = previewLink || sourceLink || downloadLink;
+  download_link,
+  image_url,
+  preview_link,
+  source_link,
+}: Exclude<
+  Awaited<ReturnType<typeof ActionGetPublicProjects>>,
+  ActionResponseError
+>["data"]["data"][number]) {
+  const hasLinks = preview_link || source_link || download_link;
 
   return (
     <FadeIn
@@ -31,14 +34,14 @@ export default function ProjectCard({
     >
       <Card
         className={cn({
-          "pt-0": !!image,
+          "pt-0": !!image_url,
         })}
       >
-        {image && (
+        {image_url && (
           <Image
             className="rounded-t-xl"
-            src={image}
-            alt={alt || title}
+            src={image_url}
+            alt={title}
             width={600}
             height={400}
             style={{ width: "100%", height: "auto" }}
@@ -57,9 +60,9 @@ export default function ProjectCard({
         </CardHeader>
         {hasLinks && (
           <CardFooter className="flex-col flex-wrap gap-4 sm:flex-row lg:flex-col xl:flex-row">
-            {sourceLink && (
+            {source_link && (
               <Link
-                href={sourceLink}
+                href={source_link}
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="secondary"
@@ -70,9 +73,9 @@ export default function ProjectCard({
               </Link>
             )}
 
-            {previewLink && (
+            {preview_link && (
               <Link
-                href={previewLink}
+                href={preview_link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-fit lg:w-full xl:w-fit"
@@ -82,9 +85,9 @@ export default function ProjectCard({
               </Link>
             )}
 
-            {downloadLink && (
+            {download_link && (
               <Link
-                href={downloadLink}
+                href={download_link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-fit lg:w-full xl:w-fit"

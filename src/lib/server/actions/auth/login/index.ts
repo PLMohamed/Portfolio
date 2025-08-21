@@ -4,7 +4,10 @@ import { USER_TOKEN_TYPES } from "@/constants/token";
 import { getUserByEmail } from "@/db/queries";
 import { USER_SCHEMA } from "@/db/schema";
 import { setSessionToken } from "@/lib/server/services";
-import { withActionValidator } from "@/lib/server/wrappers";
+import {
+  withActionValidator,
+  withRatelimitAction,
+} from "@/lib/server/wrappers";
 import { loginValidator } from "@/lib/validators";
 import { compare } from "bcrypt";
 import { cookies } from "next/headers";
@@ -58,4 +61,11 @@ const baseActionLogin = async (values: z.infer<typeof loginValidator>) => {
 
 const validatedLogin = withActionValidator(baseActionLogin, loginActionSchema);
 
-export const ActionLogin = createServerAction(validatedLogin);
+export const ActionLogin = createServerAction(
+  withRatelimitAction(validatedLogin, {
+    useIp: true,
+    duration: "1h",
+    key: "login",
+    limit: 5,
+  }),
+);

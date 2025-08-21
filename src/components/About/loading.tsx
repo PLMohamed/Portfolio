@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function Loading() {
+export default function AboutLoading() {
   return (
     <div className="container mb-10 grid grid-cols-1 gap-10 duration-400 lg:grid-cols-2 lg:gap-44">
       <div>

@@ -160,7 +160,7 @@ export const useProjectColumns = (): ColumnDef<
         cell: ({ row }) => {
           return (
             <span className="ps-4">
-              {format(new Date(row.getValue("updatedAt")), "PPP pp")}
+              {format(new Date(row.getValue("createdAt")), "PPP pp")}
             </span>
           );
         },

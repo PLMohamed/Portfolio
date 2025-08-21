@@ -1,10 +1,9 @@
-import "@/styles/globals.css";
-import { Suspense, ReactNode } from "react";
-import AboutLoading from "./@about/loading";
-import ServiceLoading from "./@services/loading";
-import { Metadata } from "next";
 import Navbar from "@/components/Navbar";
-import { ThemeProvider } from "@/providers/theme";
+import { Toaster } from "@/components/ui/sonner";
+import Providers from "@/providers";
+import "@/styles/globals.css";
+import { Metadata } from "next";
+import { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Boumedine Mohamed Touati",
@@ -31,32 +30,20 @@ export const metadata: Metadata = {
 };
 
 interface RootLayoutProps {
-  about: ReactNode;
-  services: ReactNode;
-  works: ReactNode;
+  children: ReactNode;
 }
 
-export default function RootLayout({
-  about,
-  services,
-  works,
-}: RootLayoutProps) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body className="text-foreground bg-background w-screen overflow-x-hidden scroll-smooth">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <Providers>
           <Navbar className="mb-20" />
           <main className="mb-10 flex flex-col gap-8 scroll-smooth md:gap-12 lg:gap-16">
-            <Suspense fallback={<AboutLoading />}>{about}</Suspense>
-            <Suspense fallback={<ServiceLoading />}>{services}</Suspense>
-            <Suspense>{works}</Suspense>
+            {children}
           </main>
-        </ThemeProvider>
+          <Toaster position="bottom-right" />
+        </Providers>
       </body>
     </html>
   );

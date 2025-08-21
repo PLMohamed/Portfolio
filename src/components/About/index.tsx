@@ -3,7 +3,7 @@ import { GetTechs, GetTools } from "@/lib/techs/utils";
 import { cn } from "@/lib/utils";
 import { Poppins } from "next/font/google";
 import Marquee from "react-fast-marquee";
-import StackCard from "./components/Card";
+import StackCard from "./Card";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],

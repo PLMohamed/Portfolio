@@ -17,6 +17,7 @@ import { menuItems } from "./data";
 import { renderMenuItem, renderMobileMenuItem } from "./utils";
 import NavbarDesktopContainer from "./Container";
 import ThemeController from "../Theme/Controller";
+import Link from "next/link";
 
 const lobster = Lobster({ subsets: ["latin"], weight: "400", display: "swap" });
 
@@ -26,15 +27,16 @@ export default function Navbar({ className }: { className?: string }) {
       <header className="container">
         {/* Desktop Menu */}
         <nav className="relative hidden min-h-10 justify-between lg:flex">
-          {/* Logo */}
-          <span
-            className={cn(
-              "text-lg font-bold tracking-wider md:text-xl lg:text-2xl",
-              lobster.className,
-            )}
-          >
-            PLMohamed
-          </span>
+          <Link href="/">
+            <span
+              className={cn(
+                "text-lg font-bold tracking-wider md:text-xl lg:text-2xl",
+                lobster.className,
+              )}
+            >
+              PLMohamed
+            </span>
+          </Link>
           <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center">
             <NavigationMenu>
               <NavigationMenuList>
@@ -48,7 +50,6 @@ export default function Navbar({ className }: { className?: string }) {
         {/* Mobile Menu */}
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
-            {/* Logo */}
             <span
               className={cn(
                 "text-lg font-bold tracking-wider md:text-xl lg:text-2xl",

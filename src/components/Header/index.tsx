@@ -21,6 +21,8 @@ const BREADCRUMB_TITLES = {
   "/admin/settings": "Settings",
   "/admin/projects/new": "New Project",
   "/admin/projects/[projectId]": "Edit Project",
+  "/admin/forms": "Forms",
+  "/admin/forms/[formId]": "View Form",
 };
 
 const BREADCRUMB_LINK_TITLE = {
@@ -29,6 +31,7 @@ const BREADCRUMB_LINK_TITLE = {
   users: "Users",
   settings: "Settings",
   new: "New",
+  forms: "Forms",
 };
 
 export default function AdminHeader(): React.JSX.Element {
@@ -38,11 +41,14 @@ export default function AdminHeader(): React.JSX.Element {
   const parts = pathname.split("/").filter(Boolean);
 
   const projectId = params?.projectId;
+  const formId = params?.formId;
 
   const handleParams = useCallback((): keyof typeof BREADCRUMB_TITLES => {
     if (projectId) return "/admin/projects/[projectId]";
+    if (formId) return "/admin/forms/[formId]";
+
     return pathname as keyof typeof BREADCRUMB_TITLES;
-  }, [pathname, projectId]);
+  }, [formId, pathname, projectId]);
 
   return (
     <header className="flex h-14 shrink-0 items-center justify-between gap-2 border-b px-4 transition-[width,height] ease-linear">

@@ -2,41 +2,53 @@
 
 import { ClientError } from "@/lib/server/actions";
 import {
-  ActionGetProjects,
   ActionCreateProject,
-  ActionUpdateProject,
   ActionDeleteProject,
+  ActionGetPublicProjects,
+  ActionUpdateProject,
   ActionUpdateStatusProject,
 } from "@/lib/server/actions/projects";
 import { handleAction } from "@/lib/utils";
 import { projectCreateValidator } from "@/lib/validators/project";
 import { UpdateRequest } from "@/types/request";
 import {
+  InfiniteData,
+  useInfiniteQuery,
+  UseInfiniteQueryOptions,
   useMutation,
   UseMutationOptions,
-  useQuery,
   useQueryClient,
-  UseQueryOptions,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
 import z from "zod";
 
-export function useGetProjects(
-  options?: Omit<
-    UseQueryOptions<Awaited<ReturnType<typeof getProjects>>, ClientError>,
-    "queryFn" | "queryKey"
+export function useInfiniteGetProjects(
+  options?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getProjects>>,
+      ClientError,
+      InfiniteData<Awaited<ReturnType<typeof getProjects>>>,
+      ["projects"],
+      number
+    >
   >,
 ) {
-  async function getProjects() {
-    return await handleAction(ActionGetProjects, {
-      page: 1,
+  async function getProjects({ pageParam = 1 }) {
+    return await handleAction(ActionGetPublicProjects, {
+      page: pageParam,
       limit: 10,
     });
   }
 
-  return useQuery({
+  return useInfiniteQuery({
     queryFn: getProjects,
     queryKey: ["projects"],
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.currentPage + 1;
+      return nextPage <= lastPage.totalPages ? nextPage : undefined;
+    },
+    initialPageParam: 1,
+
     ...options,
   });
 }
