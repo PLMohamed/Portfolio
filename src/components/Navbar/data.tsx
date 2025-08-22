@@ -1,4 +1,4 @@
-import { BookIcon, FolderCodeIcon, InfoIcon } from "lucide-react";
+import { BookIcon, FolderCodeIcon, InfoIcon, MailIcon } from "lucide-react";
 
 export interface MenuItem {
   title: string;
@@ -25,5 +25,11 @@ export const menuItems: MenuItem[] = [
     url: "/#projects",
     description: "Explore my past projects and case studies.",
     icon: <FolderCodeIcon className="size-5 min-h-fit" />,
+  },
+  {
+    title: "Contact",
+    url: "/contact",
+    description: "Get in touch with me.",
+    icon: <MailIcon className="size-5 min-h-fit" />,
   },
 ];
