@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import SortableHeader from "@/components/ui/data-table/sortable-header";
 import {
@@ -9,16 +10,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useDeleteForm } from "@/hooks/api/useContact";
+import { useFormsDialog } from "@/contexts/FormsDialog";
 import { ActionResponseError } from "@/lib/server/actions";
 import { ActionGetContacts } from "@/lib/server/actions/contact";
 import { ColumnDef, SortDirection } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { Loader2Icon, MoreHorizontalIcon } from "lucide-react";
+import { MoreHorizontalIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
-import { toast } from "sonner";
+import { useCallback, useMemo } from "react";
 
 export type ContactsResponse = Exclude<
   Awaited<ReturnType<typeof ActionGetContacts>>,
@@ -31,9 +31,7 @@ export const useFormsColumns = (): ColumnDef<
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const { mutate: deleteForm } = useDeleteForm();
-
-  const [deleteFormIndex, setDeleteFormIndex] = useState<number[]>([]);
+  const { setDeleteFormId } = useFormsDialog();
 
   const handleSearchParamsChange = useCallback(
     (newParams: URLSearchParams) => {
@@ -59,10 +57,6 @@ export const useFormsColumns = (): ColumnDef<
     },
     [handleSearchParamsChange, searchParams],
   );
-
-  const handleSetDeleteFormIndex = useCallback(setDeleteFormIndex, [
-    setDeleteFormIndex,
-  ]);
 
   return useMemo(
     () => [
@@ -141,6 +135,33 @@ export const useFormsColumns = (): ColumnDef<
         },
       },
       {
+        accessorKey: "is_read",
+        enableSorting: true,
+        enableHiding: true,
+        cell: ({ row }) => {
+          return (
+            <div className="flex items-center justify-center">
+              <Badge
+                variant={row.getValue("is_read") ? "success" : "destructive"}
+              >
+                {row.getValue("is_read") ? "Yes" : "No"}
+              </Badge>
+            </div>
+          );
+        },
+        header: ({ column }) => {
+          return (
+            <div className="flex items-center justify-center">
+              <SortableHeader
+                column={column}
+                title="Is Read"
+                onSortingChange={handleSortingChange}
+              />
+            </div>
+          );
+        },
+      },
+      {
         accessorKey: "createdAt",
         enableSorting: true,
         enableHiding: true,
@@ -186,27 +207,13 @@ export const useFormsColumns = (): ColumnDef<
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={() => {
-                    handleSetDeleteFormIndex((prev) => [...prev, row.index]);
-
-                    deleteForm(form.id, {
-                      onSettled: () => {
-                        handleSetDeleteFormIndex((prev) =>
-                          prev.filter((idx) => idx !== row.index),
-                        );
-                      },
-                      onSuccess: () => {
-                        toast.success(
-                          `Form '${form.subject}' deleted successfully`,
-                        );
-                      },
-                    });
+                    // Delay setting the ID to allow dropdown to close
+                    setTimeout(() => {
+                      setDeleteFormId(form.id);
+                    }, 0);
                   }}
-                  disabled={deleteFormIndex.includes(row.index)}
                 >
                   Delete form
-                  {deleteFormIndex.includes(row.index) && (
-                    <Loader2Icon className="animate-spin" />
-                  )}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -214,11 +221,6 @@ export const useFormsColumns = (): ColumnDef<
         },
       },
     ],
-    [
-      deleteForm,
-      deleteFormIndex,
-      handleSetDeleteFormIndex,
-      handleSortingChange,
-    ],
+    [handleSortingChange, setDeleteFormId],
   );
 };

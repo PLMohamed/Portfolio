@@ -38,6 +38,7 @@ const baseActionGetContacts = async (
       email: FORM_SCHEMA.email,
       subject: FORM_SCHEMA.subject,
       message: FORM_SCHEMA.message,
+      is_read: FORM_SCHEMA.is_read,
       createdAt: FORM_SCHEMA.createdAt,
     },
     condition,

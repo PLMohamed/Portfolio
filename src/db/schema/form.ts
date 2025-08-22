@@ -1,4 +1,11 @@
-import { pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+  varchar,
+} from "drizzle-orm/pg-core";
 
 export const FORM_SCHEMA = pgTable("forms", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -6,6 +13,7 @@ export const FORM_SCHEMA = pgTable("forms", {
   email: varchar("email", { length: 255 }).notNull(),
   subject: varchar("subject", { length: 255 }).notNull(),
   message: text("message").notNull(),
+  is_read: boolean("is_read").default(false),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
