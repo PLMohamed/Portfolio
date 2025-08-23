@@ -206,18 +206,9 @@ export async function setSessionToken(
   try {
     const token = await generateJwtToken(payload, `${expiresHours}h`);
 
-    const result = await CreateToken({
+    await CreateToken({
       token,
       userId: payload.uuid,
-    });
-
-    after(() => {
-      setTimeout(
-        () => {
-          revokeSessionToken(result[0].insertedId);
-        },
-        expiresHours * 3600 * 1000,
-      );
     });
 
     return token;

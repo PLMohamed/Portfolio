@@ -1,4 +1,5 @@
 import ContactForm from "@/components/Contact";
+import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 import { GithubIcon, LinkedinIcon, MailIcon } from "lucide-react";
 import { Poppins } from "next/font/google";
@@ -80,6 +81,8 @@ export default function ContactPage() {
         </div>
         <ContactForm />
       </section>
+
+      <Toaster position="bottom-right" />
     </article>
   );
 }

@@ -14,6 +14,7 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { ClientError, createServerAction } from "../..";
 import { COOKIE_NAMES } from "@/constants/config";
+import { revalidatePath } from "next/cache";
 
 const loginActionSchema = z.tuple([loginValidator]);
 
@@ -55,6 +56,9 @@ const baseActionLogin = async (values: z.infer<typeof loginValidator>) => {
     maxAge: 2 * 60 * 60,
     path: "/",
   });
+
+  revalidatePath("/admin");
+  revalidatePath("/auth/login");
 
   return;
 };

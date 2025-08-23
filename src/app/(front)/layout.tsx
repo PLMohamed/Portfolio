@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
-import { Toaster } from "@/components/ui/sonner";
 import Providers from "@/providers";
 import "@/styles/globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import { Metadata } from "next";
 import { ReactNode } from "react";
 
@@ -42,7 +42,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <main className="mb-10 flex flex-col gap-8 scroll-smooth md:gap-12 lg:gap-16">
             {children}
           </main>
-          <Toaster position="bottom-right" />
+          <Analytics />
         </Providers>
       </body>
     </html>

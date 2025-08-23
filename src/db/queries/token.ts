@@ -1,4 +1,9 @@
-import { eq, type SelectedFields, type InferSelectModel } from "drizzle-orm";
+import {
+  eq,
+  type SelectedFields,
+  type InferSelectModel,
+  lt,
+} from "drizzle-orm";
 import { TOKEN_SCHEMA, TokenInsert } from "../schema";
 import { cache } from "react";
 import { db } from "@/db";
@@ -65,6 +70,14 @@ export const GetTokensByUserId = cache(
 
 export const DeleteTokenById = cache(async (id: string) => {
   const result = await db.delete(TOKEN_SCHEMA).where(eq(TOKEN_SCHEMA.id, id));
+
+  return result.rowCount;
+});
+
+export const DeleteTokensPastDate = cache(async (date: Date) => {
+  const result = await db
+    .delete(TOKEN_SCHEMA)
+    .where(lt(TOKEN_SCHEMA.createdAt, date));
 
   return result.rowCount;
 });

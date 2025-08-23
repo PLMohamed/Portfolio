@@ -6,6 +6,7 @@ import { ClientError, createServerAction } from "../..";
 import { hash } from "bcrypt";
 import { signupValidator } from "@/lib/validators";
 import { createUser, doesUserExist } from "@/db/queries";
+import { revalidatePath } from "next/cache";
 
 const signupActionSchema = z.tuple([signupValidator]);
 
@@ -25,6 +26,9 @@ const baseActionSignup = async (values: z.infer<typeof signupValidator>) => {
     email,
     passwordHash: hashedPassword,
   });
+
+  revalidatePath("/admin");
+  revalidatePath("/auth/login");
 
   return;
 };
