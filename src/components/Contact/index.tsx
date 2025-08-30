@@ -10,11 +10,11 @@ import { FormInput } from "../ui/form/input";
 import { FormTextarea } from "../ui/form/textarea";
 import { Button } from "../ui/button";
 import { LoaderIcon, SendIcon } from "lucide-react";
-import { useCreateContact } from "@/hooks/api/useContact";
+import { useCreateForm } from "@/hooks/api/useForms";
 import { toast } from "sonner";
 
 export default function ContactForm() {
-  const { mutate, isPending } = useCreateContact();
+  const { mutate, isPending } = useCreateForm();
 
   const form = useForm<z.infer<typeof formValidator>>({
     resolver: zodResolver(formValidator),

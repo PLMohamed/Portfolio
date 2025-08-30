@@ -1,6 +1,6 @@
 import FormDisplay from "@/components/Form";
 import { Label } from "@/components/ui/label";
-import { ActionGetContactById } from "@/lib/server/actions/contact";
+import { ActionGetFormById } from "@/lib/server/actions/form";
 import { withAuthPage } from "@/lib/server/wrappers";
 import { format } from "date-fns";
 import { redirect } from "next/navigation";
@@ -14,7 +14,7 @@ interface EditProjectsPageProps {
 async function ViewFormPage({ params }: EditProjectsPageProps) {
   const { formId } = await params;
 
-  const { data: form, error } = await ActionGetContactById(formId);
+  const { data: form, error } = await ActionGetFormById(formId);
 
   if (error) {
     redirect("/admin/forms?error=" + error.message);

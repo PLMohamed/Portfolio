@@ -1,7 +1,11 @@
 import Link from "next/link";
-import { NavigationMenuItem, NavigationMenuLink } from "../ui/navigation-menu";
+import {
+  NavigationMenuItem,
+  NavigationMenuLink,
+} from "@/components/ui/navigation-menu";
 import { MenuItem } from "./data";
 import { Link as LinkButton } from "../ui/link";
+import { SheetClose } from "../ui/sheet";
 
 const renderMenuItem = (item: MenuItem) => {
   return (
@@ -18,15 +22,12 @@ const renderMenuItem = (item: MenuItem) => {
 
 const renderMobileMenuItem = (item: MenuItem) => {
   return (
-    <LinkButton
-      href={item.url}
-      variant="ghost"
-      key={item.title}
-      className="justify-start"
-    >
-      {item.icon}
-      <span>{item.title}</span>
-    </LinkButton>
+    <SheetClose key={item.title} asChild>
+      <LinkButton href={item.url} variant="ghost" className="justify-start">
+        {item.icon}
+        <span>{item.title}</span>
+      </LinkButton>
+    </SheetClose>
   );
 };
 

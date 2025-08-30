@@ -12,7 +12,6 @@ export function validateSchema<T extends unknown[]>(
   try {
     // Try to parse with safeParse (returns { success, data/error })
     const result = zodSchema.safeParse(input);
-    console.log("Validation Result:", result);
     if (result.success) {
       return result.data;
     }

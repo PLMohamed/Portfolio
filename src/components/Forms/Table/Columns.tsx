@@ -11,17 +11,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useFormsDialog } from "@/contexts/FormsDialog";
+import { useUpdateStatusForm } from "@/hooks/api/useForms";
 import { ActionResponseError } from "@/lib/server/actions";
-import { ActionGetContacts } from "@/lib/server/actions/contact";
+import { ActionGetForms } from "@/lib/server/actions/form";
 import { ColumnDef, SortDirection } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { MoreHorizontalIcon } from "lucide-react";
+import { Loader2Icon, MoreHorizontalIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { toast } from "sonner";
 
 export type ContactsResponse = Exclude<
-  Awaited<ReturnType<typeof ActionGetContacts>>,
+  Awaited<ReturnType<typeof ActionGetForms>>,
   ActionResponseError
 >["data"];
 
@@ -32,6 +34,11 @@ export const useFormsColumns = (): ColumnDef<
   const router = useRouter();
 
   const { setDeleteFormId } = useFormsDialog();
+  const { mutate: updateStatusForm } = useUpdateStatusForm();
+
+  const [updateStatusFormIndex, setUpdateStatusFormIndex] = useState<number[]>(
+    [],
+  );
 
   const handleSearchParamsChange = useCallback(
     (newParams: URLSearchParams) => {
@@ -57,6 +64,10 @@ export const useFormsColumns = (): ColumnDef<
     },
     [handleSearchParamsChange, searchParams],
   );
+
+  const handleSetUpdateStatusFormIndex = useCallback(setUpdateStatusFormIndex, [
+    setUpdateStatusFormIndex,
+  ]);
 
   return useMemo(
     () => [
@@ -203,6 +214,75 @@ export const useFormsColumns = (): ColumnDef<
                     <span>View Form</span>
                   </Link>
                 </DropdownMenuItem>
+                {form.is_read ? (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      handleSetUpdateStatusFormIndex((prev) => [
+                        ...prev,
+                        row.index,
+                      ]);
+
+                      updateStatusForm(
+                        {
+                          id: form.id,
+                          values: false,
+                        },
+                        {
+                          onSuccess: () => {
+                            toast.success(
+                              `Form '${form.subject}' status updated successfully`,
+                            );
+                          },
+                          onSettled: () => {
+                            handleSetUpdateStatusFormIndex((prev) =>
+                              prev.filter((idx) => idx !== row.index),
+                            );
+                          },
+                        },
+                      );
+                    }}
+                    disabled={updateStatusFormIndex.includes(row.index)}
+                  >
+                    Set as unread
+                    {updateStatusFormIndex.includes(row.index) && (
+                      <Loader2Icon className="animate-spin" />
+                    )}
+                  </DropdownMenuItem>
+                ) : (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      handleSetUpdateStatusFormIndex((prev) => [
+                        ...prev,
+                        row.index,
+                      ]);
+
+                      updateStatusForm(
+                        {
+                          id: form.id,
+                          values: true,
+                        },
+                        {
+                          onSuccess: () => {
+                            toast.success(
+                              `Form '${form.subject}' status updated successfully`,
+                            );
+                          },
+                          onSettled: () => {
+                            handleSetUpdateStatusFormIndex((prev) =>
+                              prev.filter((idx) => idx !== row.index),
+                            );
+                          },
+                        },
+                      );
+                    }}
+                    disabled={updateStatusFormIndex.includes(row.index)}
+                  >
+                    Set as read
+                    {updateStatusFormIndex.includes(row.index) && (
+                      <Loader2Icon className="animate-spin" />
+                    )}
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   variant="destructive"
@@ -221,6 +301,12 @@ export const useFormsColumns = (): ColumnDef<
         },
       },
     ],
-    [handleSortingChange, setDeleteFormId],
+    [
+      handleSetUpdateStatusFormIndex,
+      handleSortingChange,
+      setDeleteFormId,
+      updateStatusForm,
+      updateStatusFormIndex,
+    ],
   );
 };

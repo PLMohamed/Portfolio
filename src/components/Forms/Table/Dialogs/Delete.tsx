@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useFormsDialog } from "@/contexts/FormsDialog";
-import { useDeleteForm } from "@/hooks/api/useContact";
+import { useDeleteForm } from "@/hooks/api/useForms";
 import { CircleAlertIcon, LoaderIcon } from "lucide-react";
 import { useCallback } from "react";
 import { toast } from "sonner";

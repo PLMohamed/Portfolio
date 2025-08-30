@@ -13,9 +13,7 @@ import { createServerAction } from "../..";
 
 const createContactActionSchema = z.tuple([formValidator]);
 
-const baseActionCreateContact = async (
-  request: z.infer<typeof formValidator>,
-) => {
+const baseActionCreateForm = async (request: z.infer<typeof formValidator>) => {
   const values: FormInsert = {
     fullName: request.fullName,
     email: request.email,
@@ -31,11 +29,11 @@ const baseActionCreateContact = async (
 };
 
 const validatedCreateForm = withActionValidator(
-  baseActionCreateContact,
+  baseActionCreateForm,
   createContactActionSchema,
 );
 
-export const ActionCreateContact = createServerAction(
+export const ActionCreateForm = createServerAction(
   withRatelimitAction(validatedCreateForm, {
     key: "contact",
     limit: 2,

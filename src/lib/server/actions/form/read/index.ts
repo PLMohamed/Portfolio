@@ -8,16 +8,16 @@ import { like, or, SQL } from "drizzle-orm";
 import z from "zod";
 import { ClientError, createServerAction } from "../..";
 
-export type ContactFilter = Partial<Omit<FormType, "id">>;
+export type FormFilter = Partial<Omit<FormType, "id">>;
 
-const getContactsActionSchema = z.tuple([
+const getFormsActionSchema = z.tuple([
   formFilterValidator,
   z.object({
     session: z.any(),
   }),
 ]);
 
-const baseActionGetContacts = async (
+const baseActionGetForms = async (
   request: z.infer<typeof formFilterValidator>,
   _sessionObject: unknown,
 ) => {
@@ -57,27 +57,35 @@ const baseActionGetContacts = async (
   return forms;
 };
 
-const validatedGetContacts = withActionValidator(
-  baseActionGetContacts,
-  getContactsActionSchema,
+const validatedGetForms = withActionValidator(
+  baseActionGetForms,
+  getFormsActionSchema,
 );
 
-export const ActionGetContacts = createServerAction(
-  withAuthAction(validatedGetContacts),
+export const ActionGetForms = createServerAction(
+  withAuthAction(validatedGetForms),
 );
 
-const getContactByIdActionSchema = z.tuple([
+const getFormByIdActionSchema = z.tuple([
   z.uuid().nonempty("Id is required"),
   z.object({
     session: z.any(),
   }),
 ]);
 
-const baseActionGetContactById = async (
-  id: z.infer<typeof getContactByIdActionSchema>[0],
+const baseActionGetFormById = async (
+  id: z.infer<typeof getFormByIdActionSchema>[0],
   _sessionObject: unknown,
 ) => {
-  const contact = await getFormById(id);
+  const contact = await getFormById(id, {
+    id: FORM_SCHEMA.id,
+    subject: FORM_SCHEMA.subject,
+    fullName: FORM_SCHEMA.fullName,
+    email: FORM_SCHEMA.email,
+    message: FORM_SCHEMA.message,
+    createdAt: FORM_SCHEMA.createdAt,
+    is_read: FORM_SCHEMA.is_read,
+  });
 
   if (!contact) {
     throw new ClientError("Contact not found");
@@ -86,11 +94,11 @@ const baseActionGetContactById = async (
   return contact;
 };
 
-const validatedGetContactById = withActionValidator(
-  baseActionGetContactById,
-  getContactByIdActionSchema,
+const validatedGetFormById = withActionValidator(
+  baseActionGetFormById,
+  getFormByIdActionSchema,
 );
 
-export const ActionGetContactById = createServerAction(
-  withAuthAction(validatedGetContactById),
+export const ActionGetFormById = createServerAction(
+  withAuthAction(validatedGetFormById),
 );

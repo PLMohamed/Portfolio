@@ -100,10 +100,10 @@ export const getForms = cache(
     }
 
     const [count, results] = (await Promise.all([
-      getFormCount(whereClause),
+      getFormsCount(whereClause),
       query,
     ])) as [
-      Awaited<ReturnType<typeof getFormCount>>,
+      Awaited<ReturnType<typeof getFormsCount>>,
       InferSelectedFields<TSelect>[],
     ];
 
@@ -116,7 +116,7 @@ export const getForms = cache(
   },
 );
 
-export const getFormCount = cache(
+export const getFormsCount = cache(
   async (filters: SQL | SQL[] = []): Promise<number> => {
     const whereClause = Array.isArray(filters)
       ? filters.length > 0
@@ -152,3 +152,17 @@ export const deleteFormById = cache(async (id: string) => {
 
   return result;
 });
+
+export const updateFormById = cache(
+  async (id: string, values: Pick<FormInsert, "is_read">) => {
+    const [result] = await db
+      .update(FORM_SCHEMA)
+      .set(values)
+      .where(eq(FORM_SCHEMA.id, id))
+      .returning({
+        updatedId: FORM_SCHEMA.id,
+      });
+
+    return result;
+  },
+);

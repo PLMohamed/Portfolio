@@ -1,7 +1,7 @@
 "use client";
 
 import { ActionResponseError } from "@/lib/server/actions";
-import { ActionGetContactById } from "@/lib/server/actions/contact";
+import { ActionGetFormById } from "@/lib/server/actions/form";
 import { FormInput } from "../ui/form/input";
 import { FormTextarea } from "../ui/form/textarea";
 import { useForm } from "react-hook-form";
@@ -9,9 +9,13 @@ import z from "zod";
 import { formValidator } from "@/lib/validators/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "../ui/form";
+import { Button } from "../ui/button";
+import { CircleCheckBigIcon, LoaderIcon } from "lucide-react";
+import { useUpdateStatusForm } from "@/hooks/api/useForms";
+import { toast } from "sonner";
 
 type FormResponse = Exclude<
-  Awaited<ReturnType<typeof ActionGetContactById>>,
+  Awaited<ReturnType<typeof ActionGetFormById>>,
   ActionResponseError
 >["data"];
 
@@ -20,6 +24,8 @@ interface ContactFormProps {
 }
 
 export default function FormDisplay({ form: contact }: ContactFormProps) {
+  const { mutate: updateStatus, isPending } = useUpdateStatusForm();
+
   const form = useForm<z.infer<typeof formValidator>>({
     resolver: zodResolver(formValidator),
     defaultValues: {
@@ -64,6 +70,35 @@ export default function FormDisplay({ form: contact }: ContactFormProps) {
             readOnly
           />
         </section>
+        {!contact.is_read && (
+          <section className="flex flex-wrap items-center justify-end gap-4 max-sm:flex-col-reverse">
+            <Button
+              type="submit"
+              className="max-sm:w-full"
+              disabled={isPending}
+              onClick={() =>
+                updateStatus(
+                  {
+                    id: contact.id,
+                    values: true,
+                  },
+                  {
+                    onSuccess: () => {
+                      toast.success("Form marked as read successfully");
+                    },
+                  },
+                )
+              }
+            >
+              <span>Mark as read</span>
+              {isPending ? (
+                <LoaderIcon className="animate-spin" />
+              ) : (
+                <CircleCheckBigIcon />
+              )}
+            </Button>
+          </section>
+        )}
       </div>
     </Form>
   );

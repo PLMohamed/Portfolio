@@ -1,4 +1,4 @@
-import { ActionGetContacts } from "@/lib/server/actions/contact";
+import { ActionGetForms } from "@/lib/server/actions/form";
 import { validateSchema } from "@/lib/server/services";
 import { formFilterValidator } from "@/lib/validators/form";
 import z from "zod";
@@ -15,7 +15,7 @@ const formSchema = z.tuple([formFilterValidator]);
 
 export default async function FormsContainer({ searchParams }: ContainerProps) {
   const [validatedFilters] = validateSchema(formSchema, [searchParams]);
-  const { data } = await ActionGetContacts(validatedFilters);
+  const { data } = await ActionGetForms(validatedFilters);
 
   return (
     <section className="space-y-4 px-4">

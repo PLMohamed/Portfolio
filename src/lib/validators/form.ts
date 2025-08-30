@@ -1,7 +1,7 @@
 import { FilterRequest } from "@/types/request";
 import { FormRequest } from "@/types/request/form";
 import z from "zod";
-import { ContactFilter } from "../server/actions/contact/read";
+import { FormFilter } from "../server/actions/form/read";
 
 export const formValidator = z.object({
   fullName: z
@@ -43,4 +43,4 @@ export const formFilterValidator = z.object({
     .optional(),
   order: z.enum(["asc", "desc"]).optional(),
   q: z.string().trim().optional(),
-}) satisfies z.ZodType<FilterRequest<ContactFilter>>;
+}) satisfies z.ZodType<FilterRequest<FormFilter>>;
