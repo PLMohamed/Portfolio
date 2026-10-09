@@ -32,6 +32,8 @@ const DEFAULT_SELECT = {
   preview_link: PROJECT_SCHEMA.preview_link,
   source_link: PROJECT_SCHEMA.source_link,
   download_link: PROJECT_SCHEMA.download_link,
+  sort_order: PROJECT_SCHEMA.sort_order,
+  stack: PROJECT_SCHEMA.stack,
 };
 
 export const getProjectById = cache(

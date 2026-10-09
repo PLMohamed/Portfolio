@@ -6,6 +6,7 @@ import {
   timestamp,
   uuid,
   boolean,
+  integer,
 } from "drizzle-orm/pg-core";
 
 export const PROJECT_SCHEMA = pgTable("projects", {
@@ -16,6 +17,8 @@ export const PROJECT_SCHEMA = pgTable("projects", {
   preview_link: varchar("preview_link", { length: 255 }),
   source_link: varchar("source_link", { length: 255 }),
   download_link: varchar("download_link", { length: 255 }),
+  sort_order: integer("sort_order").notNull().default(0),
+  stack: text("stack").array().notNull().default([]),
   is_visible: boolean("is_visible").notNull().default(true),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at")

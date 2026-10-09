@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { FormImageUploader } from "@/components/ui/form/image-uploader";
 import { FormInput } from "@/components/ui/form/input";
+import { FormMultiSelect } from "@/components/ui/form/multi-select";
 import { FormTextarea } from "@/components/ui/form/textarea";
 import { useCreateProject, useUpdateProject } from "@/hooks/api/useProjects";
 import { ActionResponseError } from "@/lib/server/actions";
 import { ActionGetProjectById } from "@/lib/server/actions/projects/read";
 import { projectCreateValidator } from "@/lib/validators/project";
+import { techs, tools } from "@/lib/techs/data";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IterationCcwIcon, LoaderIcon, SaveIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -43,6 +45,8 @@ export default function ProjectForm({ project }: ProjectFormProps) {
       previewLink: project?.preview_link ?? null,
       sourceLink: project?.source_link ?? null,
       image: null,
+      sortOrder: project?.sort_order ?? 0,
+      stack: project?.stack ?? [],
     },
   });
 
@@ -126,7 +130,42 @@ export default function ProjectForm({ project }: ProjectFormProps) {
             label="Source Link"
             placeholder="Enter source link"
             type="url"
+          />
+          <FormInput
+            control={form.control}
+            name="sortOrder"
+            label="Sort Order"
+            description="Lower numbers appear first on the portfolio"
+            type="number"
+            min={0}
+            max={9999}
+            transformValue={(value) => Number(value)}
+          />
+          <FormMultiSelect
+            control={form.control}
+            name="stack"
+            label="Stack"
+            description="Techs and tools used in this project"
+            placeholder="Select techs and tools"
             containerClassName="md:col-span-2"
+            groups={[
+              {
+                label: "Techs",
+                options: techs.map(({ name, imageUrl }) => ({
+                  value: name,
+                  label: name,
+                  imageUrl,
+                })),
+              },
+              {
+                label: "Tools",
+                options: tools.map(({ name, imageUrl }) => ({
+                  value: name,
+                  label: name,
+                  imageUrl,
+                })),
+              },
+            ]}
           />
           <FormTextarea
             control={form.control}

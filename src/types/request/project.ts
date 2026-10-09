@@ -5,4 +5,6 @@ export interface ProjectRequest {
   previewLink: string | null;
   sourceLink: string | null;
   downloadLink: string | null;
+  sortOrder: number;
+  stack: string[];
 }
