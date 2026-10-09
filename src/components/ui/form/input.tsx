@@ -21,6 +21,7 @@ interface FormInputProps<
   description?: string;
   required?: boolean;
   containerClassName?: string;
+  transformValue?: (value: string) => unknown;
 }
 
 function FormInput<
@@ -33,6 +34,7 @@ function FormInput<
   description,
   required,
   containerClassName,
+  transformValue,
   className,
   ...inputProps
 }: FormInputProps<TFieldValues, TName>) {
@@ -52,6 +54,16 @@ function FormInput<
             <Input
               {...field}
               value={field.value ?? ""}
+              onChange={
+                transformValue
+                  ? (event) =>
+                      field.onChange(
+                        transformValue(
+                          (event.target as HTMLInputElement).value,
+                        ),
+                      )
+                  : field.onChange
+              }
               {...inputProps}
               className={cn(className)}
             />

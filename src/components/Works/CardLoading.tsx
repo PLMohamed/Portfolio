@@ -55,6 +55,13 @@ export default function ProjectCardLoading() {
             )}
           </div>
         </CardDescription>
+        <div className="mt-3 flex flex-wrap items-center gap-1.5">
+          {Array.from({ length: Math.floor(Math.random() * 3) + 2 }).map(
+            (_, index) => (
+              <Skeleton key={index} className="h-5 w-20 rounded-full" />
+            ),
+          )}
+        </div>
       </CardHeader>
       {hasLinks && (
         <CardFooter className="flex-col flex-wrap gap-4 sm:flex-row lg:flex-col xl:flex-row">

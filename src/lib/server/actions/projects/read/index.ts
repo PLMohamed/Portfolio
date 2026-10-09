@@ -41,6 +41,8 @@ const baseActionGetProject = async (
       title: PROJECT_SCHEMA.title,
       description: PROJECT_SCHEMA.description,
       is_visible: PROJECT_SCHEMA.is_visible,
+      sort_order: PROJECT_SCHEMA.sort_order,
+      stack: PROJECT_SCHEMA.stack,
       createdAt: PROJECT_SCHEMA.createdAt,
       updatedAt: PROJECT_SCHEMA.updatedAt,
     },
@@ -112,11 +114,16 @@ const baseActionGetPublicProject = async (
       image_url: PROJECT_SCHEMA.image_url,
       preview_link: PROJECT_SCHEMA.preview_link,
       source_link: PROJECT_SCHEMA.source_link,
+      stack: PROJECT_SCHEMA.stack,
     },
     eq(PROJECT_SCHEMA.is_visible, true),
     {
       offset: (request.page - 1) * request.limit,
       limit: request.limit,
+      orderBy: {
+        column: PROJECT_SCHEMA.sort_order,
+        direction: "asc",
+      },
     },
   );
 

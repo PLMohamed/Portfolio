@@ -16,9 +16,11 @@ import {
 } from "@/hooks/api/useProjects";
 import { ActionResponseError } from "@/lib/server/actions";
 import { ActionGetProjects } from "@/lib/server/actions/projects/read";
+import { techs, tools } from "@/lib/techs/data";
 import { ColumnDef, SortDirection } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { Loader2Icon, MoreHorizontalIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
@@ -97,6 +99,23 @@ export const useProjectColumns = (): ColumnDef<
         enableHiding: false,
       },
       {
+        accessorKey: "sort_order",
+        enableSorting: true,
+        enableHiding: true,
+        header: ({ column }) => {
+          return (
+            <SortableHeader
+              column={column}
+              title="Order"
+              onSortingChange={handleSortingChange}
+            />
+          );
+        },
+        cell: ({ row }) => {
+          return <span className="ps-4">{row.getValue("sort_order")}</span>;
+        },
+      },
+      {
         accessorKey: "description",
         enableSorting: true,
         enableHiding: true,
@@ -114,6 +133,45 @@ export const useProjectColumns = (): ColumnDef<
             <p className="max-w-md truncate ps-4">
               {row.getValue("description")}
             </p>
+          );
+        },
+      },
+      {
+        accessorKey: "stack",
+        enableSorting: false,
+        enableHiding: true,
+        header: () => {
+          return <span className="ps-4">Stack</span>;
+        },
+        cell: ({ row }) => {
+          const stack: string[] = row.getValue("stack") ?? [];
+
+          if (stack.length === 0) {
+            return <span className="text-muted-foreground ps-4">—</span>;
+          }
+
+          return (
+            <div className="flex max-w-sm flex-wrap items-center gap-1 ps-4">
+              {stack.map((item) => {
+                const tech = [...techs, ...tools].find(
+                  (entry) => entry.name === item,
+                );
+
+                return (
+                  <Badge key={item} variant="secondary">
+                    {tech && (
+                      <Image
+                        src={tech.imageUrl}
+                        alt=""
+                        width={12}
+                        height={12}
+                      />
+                    )}
+                    {item}
+                  </Badge>
+                );
+              })}
+            </div>
           );
         },
       },

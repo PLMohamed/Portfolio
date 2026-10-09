@@ -38,6 +38,8 @@ const baseActionUpdateProject = async (
     preview_link: request.previewLink,
     source_link: request.sourceLink,
     image_url: request.image ? await uploadImage(request.image) : null,
+    sort_order: request.sortOrder,
+    stack: request.stack,
   };
 
   await updateProject(id, values);

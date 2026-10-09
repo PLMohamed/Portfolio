@@ -13,7 +13,14 @@ export const projectFilterValidator = z.object({
     z.number().min(1).max(100).optional().default(10),
   ),
   sortBy: z
-    .enum(["title", "description", "is_visible", "createdAt", "updatedAt"])
+    .enum([
+      "title",
+      "description",
+      "is_visible",
+      "sort_order",
+      "createdAt",
+      "updatedAt",
+    ])
     .optional(),
   order: z.enum(["asc", "desc"]).optional(),
   q: z.string().trim().optional(),
@@ -55,5 +62,17 @@ export const projectCreateValidator = z.object({
     .mime(["image/jpeg", "image/png", "image/webp", "image/jpg"])
     .nullable()
     .default(null)
+    .nonoptional(),
+  sortOrder: z
+    .number("Sort order must be a number")
+    .int("Sort order must be a whole number")
+    .min(0, "Sort order cannot be negative")
+    .max(9999, "Maximum sort order is 9999")
+    .default(0)
+    .nonoptional(),
+  stack: z
+    .array(z.string().trim().min(1))
+    .max(24, "Maximum stack size is 24 items")
+    .default([])
     .nonoptional(),
 }) satisfies z.ZodType<ProjectRequest>;

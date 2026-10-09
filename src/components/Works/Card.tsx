@@ -6,9 +6,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Link } from "@/components/ui/link";
 import { ActionResponseError } from "@/lib/server/actions";
 import { ActionGetPublicProjects } from "@/lib/server/actions/projects";
+import { techs, tools } from "@/lib/techs/data";
 import { cn } from "@/lib/utils";
 import { DownloadIcon, ExternalLinkIcon, GithubIcon } from "lucide-react";
 import Image from "next/image";
@@ -20,11 +22,13 @@ export default function ProjectCard({
   image_url,
   preview_link,
   source_link,
+  stack,
 }: Exclude<
   Awaited<ReturnType<typeof ActionGetPublicProjects>>,
   ActionResponseError
 >["data"]["data"][number]) {
   const hasLinks = preview_link || source_link || download_link;
+  const hasStack = stack && stack.length > 0;
 
   return (
     <FadeIn
@@ -56,6 +60,29 @@ export default function ProjectCard({
           </CardTitle>
           <CardDescription>
             <p className="md:text-base">{description}</p>
+            {hasStack && (
+              <div className="mt-3 flex flex-wrap items-center gap-1.5">
+                {stack.map((item) => {
+                  const tech = [...techs, ...tools].find(
+                    (entry) => entry.name === item,
+                  );
+
+                  return (
+                    <Badge key={item} variant="secondary">
+                      {tech && (
+                        <Image
+                          src={tech.imageUrl}
+                          alt={tech.name}
+                          width={12}
+                          height={12}
+                        />
+                      )}
+                      {item}
+                    </Badge>
+                  );
+                })}
+              </div>
+            )}
           </CardDescription>
         </CardHeader>
         {hasLinks && (
