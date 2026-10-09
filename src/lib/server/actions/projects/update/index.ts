@@ -2,6 +2,7 @@
 
 import { updateProject } from "@/db/queries";
 import { ProjectInsert } from "@/db/schema";
+import { planImageUpdate } from "@/lib/server/helpers/project-image";
 import { deleteImage, uploadImage } from "@/lib/server/services";
 import { withActionValidator, withAuthAction } from "@/lib/server/wrappers";
 import { projectCreateValidator } from "@/lib/validators/project";
@@ -33,9 +34,12 @@ const baseActionUpdateProject = async (
   // explicitly clears the existing one. Leaving it untouched keeps the
   // current blob, so no re-upload or re-validation is needed.
   const hasNewImage = !!request.image;
-  const shouldRemoveImage = !hasNewImage && request.removeImage;
+  const plan = planImageUpdate(
+    { hasNewImage, removeImage: request.removeImage },
+    data.image_url,
+  );
 
-  if ((hasNewImage || shouldRemoveImage) && data.image_url) {
+  if (plan.shouldDeleteExisting && data.image_url) {
     await deleteImage(data.image_url);
   }
 
@@ -47,9 +51,7 @@ const baseActionUpdateProject = async (
     source_link: request.sourceLink,
     image_url: hasNewImage
       ? await uploadImage(request.image as File)
-      : shouldRemoveImage
-        ? null
-        : data.image_url,
+      : plan.nextImageUrl,
     sort_order: request.sortOrder,
     stack: request.stack,
   };
