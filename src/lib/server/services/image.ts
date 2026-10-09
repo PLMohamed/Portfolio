@@ -19,6 +19,7 @@ export async function uploadImage(image: File): Promise<string> {
   if (isVercel) {
     const blob = await put(imageId, optimizedImage, {
       access: "public",
+      contentType: "image/webp",
     });
     return blob.url;
   }

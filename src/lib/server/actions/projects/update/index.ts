@@ -29,7 +29,15 @@ const baseActionUpdateProject = async (
     throw error;
   }
 
-  if (data.image_url) await deleteImage(data.image_url);
+  // The image is only touched when the admin actually supplies a new file or
+  // explicitly clears the existing one. Leaving it untouched keeps the
+  // current blob, so no re-upload or re-validation is needed.
+  const hasNewImage = !!request.image;
+  const shouldRemoveImage = !hasNewImage && request.removeImage;
+
+  if ((hasNewImage || shouldRemoveImage) && data.image_url) {
+    await deleteImage(data.image_url);
+  }
 
   const values: ProjectInsert = {
     title: request.title,
@@ -37,7 +45,11 @@ const baseActionUpdateProject = async (
     download_link: request.downloadLink,
     preview_link: request.previewLink,
     source_link: request.sourceLink,
-    image_url: request.image ? await uploadImage(request.image) : null,
+    image_url: hasNewImage
+      ? await uploadImage(request.image as File)
+      : shouldRemoveImage
+        ? null
+        : data.image_url,
     sort_order: request.sortOrder,
     stack: request.stack,
   };

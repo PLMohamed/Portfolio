@@ -63,6 +63,9 @@ export const projectCreateValidator = z.object({
     .nullable()
     .default(null)
     .nonoptional(),
+  // Only meaningful on update: lets the admin clear an existing image
+  // without an uploaded file being present.
+  removeImage: z.boolean().default(false).nonoptional(),
   sortOrder: z
     .number("Sort order must be a number")
     .int("Sort order must be a whole number")

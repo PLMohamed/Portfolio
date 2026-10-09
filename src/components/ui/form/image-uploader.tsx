@@ -31,6 +31,10 @@ interface FormImageUploaderProps<
   description?: string;
   required?: boolean;
   containerClassName?: string;
+  /** URL of the image already stored for this record, shown until replaced. */
+  existingImage?: string | null;
+  /** Called when the user clears an existing image, so it can be removed on save. */
+  onRemoveExisting?: () => void;
 }
 
 function FormImageUploader<
@@ -43,9 +47,12 @@ function FormImageUploader<
   description,
   required,
   containerClassName,
+  existingImage,
+  onRemoveExisting,
   className,
   ...inputProps
 }: FormImageUploaderProps<TFieldValues, TName>) {
+  const [isExistingRemoved, setIsExistingRemoved] = React.useState(false);
   const [preview, setPreview] = React.useState<string | null>(null);
   const [isHoveringButton, setIsHoveringButton] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
@@ -56,7 +63,8 @@ function FormImageUploader<
 
   React.useEffect(() => {
     return () => {
-      if (preview) {
+      // Only object URLs are revocable; an existing image is a remote URL.
+      if (preview?.startsWith("blob:")) {
         URL.revokeObjectURL(preview);
       }
     };
@@ -68,7 +76,11 @@ function FormImageUploader<
       name={name}
       render={({ field }) => (
         <FormItem className={cn(containerClassName)}>
-          <FormImageUploaderHook field={field} setPreview={handleSetPreview} />
+          <FormImageUploaderHook
+            field={field}
+            setPreview={handleSetPreview}
+            existingImage={isExistingRemoved ? null : existingImage}
+          />
           {label && (
             <FormLabel>
               {label}
@@ -112,6 +124,10 @@ function FormImageUploader<
                     onClick={() => {
                       field.onChange(null);
                       setIsHoveringButton(false);
+                      if (existingImage) {
+                        setIsExistingRemoved(true);
+                        onRemoveExisting?.();
+                      }
                     }}
                     onMouseEnter={() => setIsHoveringButton(true)}
                     onMouseLeave={() => setIsHoveringButton(false)}
@@ -169,17 +185,21 @@ function FormImageUploaderHook<
 >({
   field,
   setPreview,
+  existingImage,
 }: {
   field: ControllerRenderProps<TFieldValues, TName>;
   setPreview: (preview: string | null) => void;
+  existingImage?: string | null;
 }) {
   React.useEffect(() => {
     if (field.value) {
       setPreview(URL.createObjectURL(field.value));
     } else {
-      setPreview(null);
+      // Fall back to the stored image so it stays visible without
+      // re-uploading and re-validating it on every save.
+      setPreview(existingImage ?? null);
     }
-  }, [field.value, setPreview]);
+  }, [field.value, setPreview, existingImage]);
 
   return null;
 }
