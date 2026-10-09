@@ -7,4 +7,5 @@ export interface ProjectRequest {
   downloadLink: string | null;
   sortOrder: number;
   stack: string[];
+  removeImage: boolean;
 }

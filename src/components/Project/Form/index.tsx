@@ -14,7 +14,6 @@ import { techs, tools } from "@/lib/techs/data";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IterationCcwIcon, LoaderIcon, SaveIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -45,12 +44,11 @@ export default function ProjectForm({ project }: ProjectFormProps) {
       previewLink: project?.preview_link ?? null,
       sourceLink: project?.source_link ?? null,
       image: null,
+      removeImage: false,
       sortOrder: project?.sort_order ?? 0,
       stack: project?.stack ?? [],
     },
   });
-
-  const formRef = useRef(form);
 
   const isUpdate = !!project;
   const isPending = isPendingCreate || isPendingUpdate;
@@ -76,27 +74,6 @@ export default function ProjectForm({ project }: ProjectFormProps) {
       },
     });
   }
-
-  useEffect(() => {
-    async function fetchImage() {
-      if (!project?.image_url) return;
-
-      const response = await fetch(project.image_url);
-
-      if (!response.ok) {
-        toast.error("Failed to fetch project image.");
-        return;
-      }
-
-      const blob = await response.blob();
-      const file = new File([blob], "project-image", {
-        type: blob.type,
-      });
-
-      formRef.current.setValue("image", file);
-    }
-    fetchImage();
-  }, [project?.image_url]);
 
   return (
     <Form {...form}>
@@ -184,6 +161,10 @@ export default function ProjectForm({ project }: ProjectFormProps) {
             description="Image must be in PNG, JPG, JPEG, or WEBP format and less than 5MB"
             containerClassName="md:col-span-2"
             className="min-h-40"
+            existingImage={project?.image_url}
+            onRemoveExisting={() =>
+              form.setValue("removeImage", true, { shouldDirty: true })
+            }
           />
         </section>
 
