@@ -5,6 +5,7 @@
  * This only ever touches a database whose name ends in "_test".
  */
 import "dotenv/config";
+import { Client } from "pg";
 import {
   ensureTestDatabase,
   getTestDatabaseUrl,
@@ -30,6 +31,15 @@ async function main() {
   }
 
   await ensureTestDatabase();
+
+  const client = new Client({ connectionString: url });
+  await client.connect();
+  try {
+    await client.query("DROP SCHEMA public CASCADE");
+    await client.query("CREATE SCHEMA public");
+  } finally {
+    await client.end();
+  }
   console.log(`✓ database ready: ${name}`);
 
   await migrateTestDatabase();

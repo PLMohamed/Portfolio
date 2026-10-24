@@ -15,6 +15,9 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
+    // Each database test file uses its own tables/data scope, so files can run
+    // concurrently without resetting another file's data.
+    fileParallelism: true,
     setupFiles: ["./vitest.setup.ts"],
     include: ["src/**/*.test.{ts,tsx}"],
     coverage: {

@@ -109,7 +109,7 @@ export async function migrateTestDatabase(): Promise<void> {
   const url = getTestDatabaseUrl();
   if (!url) throw new Error("Could not determine a test database URL.");
 
-  const dir = path.join(process.cwd(), "prod_migrations");
+  const dir = path.join(process.cwd(), "migrations");
   const files = readdirSync(dir)
     .filter((f) => f.endsWith(".sql"))
     .sort();
@@ -142,12 +142,16 @@ export function testPool() {
 }
 
 /** Empties the tables used by tests, leaving the schema in place. */
-export async function resetTables(client: {
-  query: (sql: string) => Promise<unknown>;
-}): Promise<void> {
-  await client.query(
-    'TRUNCATE TABLE "projects", "forms", "tokens", "users" RESTART IDENTITY CASCADE',
-  );
+export async function resetTables(): Promise<void> {
+  const client = testPool();
+  await client.connect();
+  try {
+    await client.query(
+      'TRUNCATE TABLE "projects", "forms", "tokens", "users" RESTART IDENTITY CASCADE',
+    );
+  } finally {
+    await client.end();
+  }
 }
 
 export const testDatabaseAvailable = () => {

@@ -48,7 +48,7 @@ export const getFormById = cache(
       .where(eq(FORM_SCHEMA.id, id))
       .limit(1)) as InferSelectedFields<TSelect>[];
 
-    return form;
+    return form ?? null;
   },
 );
 

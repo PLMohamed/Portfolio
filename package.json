@@ -30,9 +30,9 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "db": "drizzle-kit",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
+    "test": "pnpm run test:setup && vitest run",
+    "test:watch": "pnpm run test:setup && vitest watch",
+    "test:coverage": "pnpm run test:setup && vitest run --coverage",
     "test:setup": "tsx scripts/setup-test-db.ts"
   },
   "dependencies": {
