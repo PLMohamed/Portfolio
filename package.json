@@ -1,5 +1,5 @@
 {
-  "name": "protfolio",
+  "name": "portfolio",
   "version": "1.0.0",
   "private": true,
   "author": {
@@ -32,7 +32,8 @@
     "db": "drizzle-kit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:setup": "tsx scripts/setup-test-db.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
