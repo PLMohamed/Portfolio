@@ -12,6 +12,19 @@ services:
     ports:
       - ${DATABASE_PORT}:${DATABASE_PORT}
 
+  # Isolated database used by the integration tests.
+  # It has its own volume and host port so it cannot touch the development DB.
+  db-test:
+    image: postgres:13.21-alpine3.22
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}_test
+    volumes:
+      - db_test_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
   redis:
     image: redis:alpine3.21
     container_name: nextjs_redis
@@ -33,5 +46,6 @@ services:
 
 volumes:
   db_data:
+  db_test_data:
   redis_data:
   serverless_redis_data:
