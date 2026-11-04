@@ -40,24 +40,18 @@ export default function WorksContainer({
     return [...initialProject, ...newProjects];
   }, [initialProject, data]);
 
-  const projectsParPart = useMemo(
-    () => Math.floor(allProjects.length / parts),
-    [allProjects.length, parts],
-  );
-  const remainder = useMemo(
-    () => allProjects.length % parts,
-    [allProjects.length, parts],
-  );
-
   const projectsParts = useMemo(() => {
-    const partsArray = Array.from({ length: parts }, (_, index) => {
-      const start = index * projectsParPart + Math.min(index, remainder);
-      const end =
-        (index + 1) * projectsParPart + Math.min(index + 1, remainder);
-      return allProjects.slice(start, end);
+    const partsArray = Array.from(
+      { length: parts },
+      () => [] as typeof allProjects,
+    );
+
+    allProjects.forEach((project, index) => {
+      partsArray[index % parts].push(project);
     });
+
     return partsArray;
-  }, [parts, allProjects, projectsParPart, remainder]);
+  }, [parts, allProjects]);
 
   const sentinelRef = useCallback(
     (node: HTMLDivElement | null) => {
