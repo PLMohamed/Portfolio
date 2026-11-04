@@ -2,8 +2,33 @@ import ContactForm from "@/components/Contact";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 import { GithubIcon, LinkedinIcon, MailIcon } from "lucide-react";
+import { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
+
+const CONTACT_DESCRIPTION =
+  "Get in touch with Boumedine Mohamed Touati (PLMohamed) for new opportunities, collaborations, or just a friendly chat.";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description: CONTACT_DESCRIPTION,
+  alternates: {
+    canonical: "/contact",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/contact",
+    siteName: "PLMohamed",
+    title: "Contact | PLMohamed",
+    description: CONTACT_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact | PLMohamed",
+    description: CONTACT_DESCRIPTION,
+  },
+};
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
