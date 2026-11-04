@@ -3,7 +3,14 @@ import AboutLoading from "@/components/About/loading";
 import Services from "@/components/Services";
 import ServiceLoading from "@/components/Services/loading";
 import Projects from "@/components/Works";
+import { Metadata } from "next";
 import { Fragment, Suspense } from "react";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default function Page() {
   return (
